@@ -1,0 +1,38 @@
+sources:
+  - name: 關鍵評論網
+    rss: https://feeds.feedburner.com/TheNewsLens
+    url: https://www.thenewslens.com/news
+    sitemap: https://www.thenewslens.com/sitemap.xml
+    article_regex: /article/\d+
+
+  - name: 公視新聞
+    rss: https://news.pts.org.tw/xml/newsfeed.xml
+    # url: https://news.pts.org.tw/
+    url: https://news.pts.org.tw/dailynews
+    sitemap: https://news.pts.org.tw/sitemap.xml
+    article_regex: /article/\d+
+
+  - name: 科技新報
+    rss: http://technews.tw/tn-rss
+    url: https://technews.tw/
+    sitemap: https://technews.tw/sitemap.xml
+    article_regex: /\d{4}/\d{2}/\d{2}/[\w-]+
+
+  - name: 少年報導者
+    url: https://kids.twreporter.org/
+    # url: https://kids.twreporter.org/all
+    sitemap: https://kids.twreporter.org/sitemap.xml
+    article_regex: /article/[\w-]+
+
+  - name: 中學生報
+    url: https://www.mdnkids.com/youth/
+    sitemap: None
+    article_regex: content\.asp\?Link_String_=\w+
+
+  - name: 少年新聞週記
+    url: https://www.mnews.tw/show/teen
+    sitemap: None
+    article_regex: /external/mirrordaily\w+|/story/\d{8}\w+
+
+# good source!
+# https://rss.feedspot.com/taiwan_news_rss_feeds/
