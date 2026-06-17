@@ -1,0 +1,7 @@
+.*.sw?
+.swp*
+tmp/*
+articles/*
+.vscode/*
+__pycache__/*
+.venv/*
