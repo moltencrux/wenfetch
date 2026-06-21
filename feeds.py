@@ -7,7 +7,7 @@ from email.utils import parsedate_to_datetime
 
 import feedparser
 
-from models import Article
+from article import Article
 
 
 def _parse_date(entry) -> datetime | None:

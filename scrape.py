@@ -21,7 +21,7 @@ import yaml
 
 from extractor import extract_all
 from feeds import fetch_feed
-from models import Article
+from article import Article
 from spider import fetch_index
 from storage import is_fetched, save
 
@@ -70,7 +70,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument(
         "-o",
         "--output-dir",
-        default="articles",
+        default="data/articles",
         metavar="DIR",
         help="Directory to store articles (default: ./articles).",
     )

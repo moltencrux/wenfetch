@@ -16,7 +16,7 @@ from urllib.parse import urljoin, urlparse
 import trafilatura
 from trafilatura.utils import load_html
 
-from models import Article
+from article import Article
 
 
 def _same_domain(base: str, url: str) -> bool:

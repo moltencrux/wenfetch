@@ -13,7 +13,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from models import Article
+from article import Article
 
 
 def url_to_key(url: str) -> str:

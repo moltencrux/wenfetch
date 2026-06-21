@@ -1,0 +1,41 @@
+services:
+  caddy:
+    image: caddy:alpine
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-8080}:8080"
+      - "${HTTPS_PORT:-8443}:8443"
+    volumes:
+      - caddy_data:/data
+      - ../staticfiles:/static:ro
+    configs:
+      - source: caddy_config
+        target: /etc/caddy/Caddyfile
+    command: caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
+    depends_on:
+      - web
+
+configs:
+  caddy_config:
+    content: |
+      {
+        http_port ${HTTP_PORT:-8080}
+        https_port ${HTTPS_PORT:-8443}
+      }
+
+      https://${SERVER_HOSTNAME:-localhost} {
+        tls ${TLS_MODE:-internal}
+
+        handle_path /static/* {
+          root * /static
+          file_server
+        }
+
+        reverse_proxy web:8000 {
+          header_up X-Forwarded-Proto https
+          header_up Host {http.request.host}
+        }
+      }
+
+volumes:
+  caddy_data:

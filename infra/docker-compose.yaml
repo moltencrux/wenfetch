@@ -1,0 +1,18 @@
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile
+    restart: unless-stopped
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.prod
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,::1}
+      DJANGO_DEBUG: ${DJANGO_DEBUG:-False}
+      CSRF_TRUSTED_ORIGINS: ${CSRF_TRUSTED_ORIGINS:-}
+      SECURE_PROXY_SSL_HEADER: '("HTTP_X_FORWARDED_PROTO", "https")'
+      GUNICORN_CMD_ARGS: ${GUNICORN_CMD_ARGS:---timeout 120 --keep-alive 30 --log-level info}
+    volumes:
+      - ../data:/app/data:Z
+    expose:
+      - "8000"

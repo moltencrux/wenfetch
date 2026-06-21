@@ -6,10 +6,12 @@ Usage:
     manage.py import_tokens
     manage.py import_tokens --articles /path/to/articles
     manage.py import_tokens --source 科技新報
+    manage.py import_tokens --dict data/moe_words.txt
 """
 
 import sys
 from pathlib import Path
+from string import printable
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -20,17 +22,42 @@ from apps.recommender.models import ArticleToken
 
 try:
     import opencc
-
     _t2s = opencc.OpenCC("t2s")
     HAS_OPENCC = True
 except ImportError:
     HAS_OPENCC = False
 
-FILTER_CHARS = set(__import__("string").printable)
+FILTER_CHARS = set(printable)
 
 
-def tokenize(text: str, seg) -> set[str]:
-    """Segment text into unique tokens, converting to simplified first."""
+def load_wordlist(path: str) -> set[str]:
+    """
+    Load a word list, one word per line.
+    Strips tab-separated annotations and bracket annotations.
+    Converts to simplified if opencc is available.
+    Excludes entries with no Chinese characters.
+    """
+    words = set()
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            word = line.split("\t")[0].strip()
+            if not word or word.startswith("#"):
+                continue
+            word = word.split("[")[0].strip()
+            if not set(word) - FILTER_CHARS:
+                continue
+            if HAS_OPENCC:
+                word = _t2s.convert(word)
+            words.add(word)
+    return words
+
+
+def tokenize(text: str, seg, reference: set[str] | None = None) -> set[str]:
+    """
+    Segment text into unique tokens, converting to simplified first.
+    If reference is provided, only tokens present in it are returned.
+    Otherwise keeps tokens containing at least one Chinese character.
+    """
     tokens = set()
     for line in text.splitlines():
         line = line.strip()
@@ -39,8 +66,12 @@ def tokenize(text: str, seg) -> set[str]:
         if HAS_OPENCC:
             line = _t2s.convert(line)
         for token in seg.cut(line):
-            if set(token) - FILTER_CHARS:
-                tokens.add(token)
+            if reference is not None:
+                if token in reference:
+                    tokens.add(token)
+            else:
+                if set(token) - FILTER_CHARS:
+                    tokens.add(token)
     return tokens
 
 
@@ -63,12 +94,27 @@ class Command(BaseCommand):
             default=None,
             help="pkuseg domain model: news, web, medicine, tourism.",
         )
+        parser.add_argument(
+            "--dict",
+            default=None,
+            metavar="FILE",
+            help="Reference dictionary (e.g. MoE). Only tokens present in "
+                 "this dictionary will be stored. Filters punctuation, numbers, "
+                 "foreign words, and obscure proper nouns.",
+        )
 
     def handle(self, *args, **options):
         articles_dir = Path(options["articles"] or settings.ARTICLES_DIR)
         if not articles_dir.exists():
             self.stderr.write(f"Articles directory not found: {articles_dir}")
             sys.exit(1)
+
+        # Load optional reference dictionary
+        reference = None
+        if options["dict"]:
+            self.stdout.write("Loading reference dictionary...")
+            reference = load_wordlist(options["dict"])
+            self.stdout.write(f"  {len(reference):,} entries loaded")
 
         self.stdout.write("Loading segmenter...")
         seg_kwargs = {}
@@ -96,7 +142,8 @@ class Command(BaseCommand):
             new_files = [f for f in json_files if f.stem not in existing_keys]
 
             self.stdout.write(
-                f"[{source_name}] {len(json_files)} articles, " f"{len(new_files)} new"
+                f"[{source_name}] {len(json_files)} articles, "
+                f"{len(new_files)} new"
             )
 
             for meta_path in new_files:
@@ -104,7 +151,7 @@ class Command(BaseCommand):
                 if not txt_path.exists():
                     continue
                 text = txt_path.read_text(encoding="utf-8")
-                tokens = tokenize(text, seg)
+                tokens = tokenize(text, seg, reference=reference)
                 if not tokens:
                     continue
 
@@ -124,8 +171,6 @@ class Command(BaseCommand):
 
             total_skipped += len(json_files) - len(new_files)
 
-        self.stdout.write(
-            self.style.SUCCESS(
-                f"Done — {total_added} tokens added, {total_skipped} articles skipped."
-            )
-        )
+        self.stdout.write(self.style.SUCCESS(
+            f"Done — {total_added} tokens added, {total_skipped} articles skipped."
+        ))
