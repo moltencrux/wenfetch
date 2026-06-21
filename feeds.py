@@ -47,10 +47,12 @@ def fetch_feed(source: dict) -> list[Article]:
             continue
         if not _check_url(url, pattern, name):
             continue
-        articles.append(Article(
-            url=url,
-            source=name,
-            title=getattr(entry, "title", ""),
-            date=_parse_date(entry),
-        ))
+        articles.append(
+            Article(
+                url=url,
+                source=name,
+                title=getattr(entry, "title", ""),
+                date=_parse_date(entry),
+            )
+        )
     return articles

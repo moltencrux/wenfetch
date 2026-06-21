@@ -1,7 +1,29 @@
+# Editor
 .*.sw?
 .swp*
-tmp/*
-articles/*
-.vscode/*
-__pycache__/*
-.venv/*
+.vscode/
+
+# Python
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+
+# Django
+staticfiles/
+*.sqlite3
+
+# Project data (large, generated)
+tmp/
+data/*
+articles/
+
+# But keep the data directory itself and placeholder
+!data/.gitkeep
+
+# Secrets
+.env

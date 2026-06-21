@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}推薦文章{% endblock %}
+{% block content %}
+<div class="row mt-4">
+  <div class="col-md-3">
+    <h5>搜尋設定</h5>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label">詞彙表</label>
+        <select name="vocab_list" class="form-select" required>
+          <option value="">— 選擇詞彙表 —</option>
+          {% for vl in vocab_lists %}
+            <option value="{{ vl.id }}" {% if vl.id|stringformat:"s" == selected_list_id %}selected{% endif %}>
+              {{ vl.name }}
+            </option>
+          {% endfor %}
+        </select>
+        {% if not vocab_lists %}
+          <div class="form-text"><a href="{% url 'vocab_list_create' %}">建立一個詞彙表</a>來開始。</div>
+        {% endif %}
+      </div>
+      <div class="mb-3">
+        <label class="form-label">來源 (選填)</label>
+        <select name="source" class="form-select">
+          <option value="">— 所有來源 —</option>
+          {% for src in sources %}
+            <option value="{{ src }}" {% if src == selected_source %}selected{% endif %}>{{ src }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">評分方式</label>
+        <select name="heuristic" class="form-select">
+          <option value="avg" {% if heuristic == "avg" %}selected{% endif %}>平均頻率 (預設)</option>
+          <option value="total" {% if heuristic == "total" %}selected{% endif %}>總頻率</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">推薦數量</label>
+        <input type="number" name="n" class="form-control" value="10" min="1" max="50">
+      </div>
+      <button type="submit" class="btn btn-primary w-100">取得推薦</button>
+    </form>
+  </div>
+  <div class="col-md-9">
+    <h5>推薦文章 {% if results %}<span class="text-muted fs-6">({{ results|length }} 篇)</span>{% endif %}</h5>
+    {% if results %}
+      {% for r in results %}
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h6 class="card-title mb-1">
+                  {% if r.url %}
+                    <a href="{{ r.url }}" target="_blank" rel="noopener">{{ r.title|default:r.article_key }}</a>
+                  {% else %}
+                    {{ r.title|default:r.article_key }}
+                  {% endif %}
+                </h6>
+                <small class="text-muted">{{ r.source }}{% if r.published %} · {{ r.published|slice:":10" }}{% endif %}</small>
+              </div>
+              <span class="badge bg-secondary score-badge ms-2">{{ r.score|floatformat:1 }}</span>
+            </div>
+            <div class="mt-2">
+              <small class="text-muted">{{ r.unknown_count }} 個未知詞 · 高頻未知詞：</small>
+              {% for token in r.top_unknown %}
+                <span class="badge bg-light text-dark border me-1">{{ token }}</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% elif request.method == "POST" %}
+      <p class="text-muted">沒有找到符合條件的文章。</p>
+    {% else %}
+      <p class="text-muted">選擇詞彙表並按下「取得推薦」。</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

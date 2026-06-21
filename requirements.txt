@@ -1,0 +1,9 @@
+django>=5.0,<7.0
+trafilatura>=1.9
+spacy-pkuseg>=1.0.1
+feedparser>=6.0
+pyyaml>=6.0
+lxml>=5.0
+opencc-python-reimplemented>=0.1.7
+whitenoise>=6.7
+gunicorn>=22.0

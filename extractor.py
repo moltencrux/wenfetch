@@ -18,7 +18,7 @@ def extract(article: Article) -> Article:
         downloaded,
         include_comments=False,
         include_tables=False,
-        no_fallback=False,       # allow readability-lxml fallback
+        no_fallback=False,  # allow readability-lxml fallback
     )
     if text:
         article.text = text

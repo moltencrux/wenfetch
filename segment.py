@@ -18,6 +18,7 @@ import spacy_pkuseg as pkuseg
 # opencc is optional — used to expand custom dict entries with script variants
 try:
     import opencc
+
     _t2s = opencc.OpenCC("t2s")
     _s2t = opencc.OpenCC("s2t")
     HAS_OPENCC = True
@@ -39,7 +40,7 @@ def build_merged_dict(user_dict_path: str) -> str:
     default_pkl = pkg / "dicts" / "default.pkl"
 
     with open(default_pkl, "rb") as f:
-        default_words_str = pickle.load(f)   # newline-delimited string
+        default_words_str = pickle.load(f)  # newline-delimited string
 
     default_words = set(default_words_str.splitlines())
 
@@ -47,16 +48,16 @@ def build_merged_dict(user_dict_path: str) -> str:
 
     extra = []
     for line in user_lines:
-        word = line.split("\t")[0].strip()   # strip optional POS tag
+        word = line.split("\t")[0].strip()  # strip optional POS tag
         if not word:
             continue
-        extra.append(line)                   # original entry (may include POS)
+        extra.append(line)  # original entry (may include POS)
         if HAS_OPENCC:
             simp = _t2s.convert(word)
             trad = _s2t.convert(word)
             for variant in (simp, trad):
                 if variant != word and variant not in default_words:
-                    extra.append(variant)    # variant without POS tag
+                    extra.append(variant)  # variant without POS tag
 
     merged = default_words_str + "\n" + "\n".join(extra)
 
@@ -79,18 +80,21 @@ def build_parser() -> argparse.ArgumentParser:
         help="Input file(s). Reads from stdin if none given.",
     )
     p.add_argument(
-        "-o", "--output",
+        "-o",
+        "--output",
         metavar="OUTPUT",
         help="Output file. Defaults to stdout.",
     )
     p.add_argument(
-        "-m", "--model",
+        "-m",
+        "--model",
         metavar="MODEL",
         default=None,
         help="Domain model: news, web, medicine, tourism (default: mixed).",
     )
     p.add_argument(
-        "-d", "--dict",
+        "-d",
+        "--dict",
         metavar="DICT",
         default=None,
         help="Path to a user dictionary file, one word per line.",
@@ -117,11 +121,14 @@ def main() -> None:
     if args.dict:
         kwargs["user_dict"] = build_merged_dict(args.dict)
         if HAS_OPENCC:
-            print("[info] opencc available — script variants added to custom dict",
-                  file=sys.stderr)
+            print(
+                "[info] opencc available — script variants added to custom dict",
+                file=sys.stderr,
+            )
         else:
-            print("[info] opencc not available — custom dict used as-is",
-                  file=sys.stderr)
+            print(
+                "[info] opencc not available — custom dict used as-is", file=sys.stderr
+            )
 
     seg = pkuseg.pkuseg(**kwargs)
 

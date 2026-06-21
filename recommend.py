@@ -22,6 +22,7 @@ FILTER_CHARS = set(printable)
 
 try:
     import opencc
+
     _t2s = opencc.OpenCC("t2s")
     HAS_OPENCC = True
 except ImportError:
@@ -31,6 +32,7 @@ except ImportError:
 # ---------------------------------------------------------------------------
 # Loaders
 # ---------------------------------------------------------------------------
+
 
 def load_freq_table(path: str) -> dict[str, int]:
     """Load a word frequency table: <word>\t<frequency> one entry per line."""
@@ -42,14 +44,18 @@ def load_freq_table(path: str) -> dict[str, int]:
                 continue
             parts = line.split("\t")
             if len(parts) < 2:
-                print(f"[warn] freq table line {lineno} malformed: {line!r}",
-                      file=sys.stderr)
+                print(
+                    f"[warn] freq table line {lineno} malformed: {line!r}",
+                    file=sys.stderr,
+                )
                 continue
             try:
                 freq[parts[0]] = int(parts[1])
             except ValueError:
-                print(f"[warn] freq table line {lineno} non-integer: {line!r}",
-                      file=sys.stderr)
+                print(
+                    f"[warn] freq table line {lineno} non-integer: {line!r}",
+                    file=sys.stderr,
+                )
     return freq
 
 
@@ -79,6 +85,7 @@ def load_wordlist(path: str) -> set[str]:
 # Segmentation
 # ---------------------------------------------------------------------------
 
+
 def tokenize(text: str, seg, reference: set[str] | None = None) -> list[str]:
     """
     Segment article text into words, converting to simplified first.
@@ -106,8 +113,10 @@ def tokenize(text: str, seg, reference: set[str] | None = None) -> list[str]:
 # Scoring
 # ---------------------------------------------------------------------------
 
-def score_avg(tokens: list[str], freq: dict[str, int],
-              vocab: set[str]) -> tuple[float, dict]:
+
+def score_avg(
+    tokens: list[str], freq: dict[str, int], vocab: set[str]
+) -> tuple[float, dict]:
     """
     Heuristic 'avg' (default): average corpus frequency of unknown words.
     Normalised for article length.
@@ -117,16 +126,17 @@ def score_avg(tokens: list[str], freq: dict[str, int],
     score = sum(freqs.values()) / len(unknown) if unknown else 0.0
     top = sorted(freqs, key=freqs.__getitem__, reverse=True)
     return score, {
-        "total_tokens":   len(tokens),
-        "unique_tokens":  len(set(tokens)),
-        "unknown_count":  len(unknown),
-        "unknown_list":   top,          # full list, highest freq first
-        "top_unknown":    top[:10],     # for display
+        "total_tokens": len(tokens),
+        "unique_tokens": len(set(tokens)),
+        "unknown_count": len(unknown),
+        "unknown_list": top,  # full list, highest freq first
+        "top_unknown": top[:10],  # for display
     }
 
 
-def score_total(tokens: list[str], freq: dict[str, int],
-                vocab: set[str]) -> tuple[float, dict]:
+def score_total(
+    tokens: list[str], freq: dict[str, int], vocab: set[str]
+) -> tuple[float, dict]:
     """
     Heuristic 'total': sum of corpus frequencies of unknown words.
     Length-biased — longer articles tend to score higher.
@@ -136,17 +146,17 @@ def score_total(tokens: list[str], freq: dict[str, int],
     score = float(sum(freqs.values()))
     top = sorted(freqs, key=freqs.__getitem__, reverse=True)
     return score, {
-        "total_tokens":   len(tokens),
-        "unique_tokens":  len(set(tokens)),
-        "unknown_count":  len(unknown),
-        "total_freq":     int(score),
-        "unknown_list":   top,
-        "top_unknown":    top[:10],
+        "total_tokens": len(tokens),
+        "unique_tokens": len(set(tokens)),
+        "unknown_count": len(unknown),
+        "total_freq": int(score),
+        "unknown_list": top,
+        "top_unknown": top[:10],
     }
 
 
 HEURISTICS: dict = {
-    "avg":   score_avg,
+    "avg": score_avg,
     "total": score_total,
 }
 
@@ -154,6 +164,7 @@ HEURISTICS: dict = {
 # ---------------------------------------------------------------------------
 # Output
 # ---------------------------------------------------------------------------
+
 
 def format_stats(stats: dict, heuristic: str) -> str:
     """Format a stats dict into a human-readable string for verbose output."""
@@ -174,29 +185,66 @@ def format_stats(stats: dict, heuristic: str) -> str:
 # CLI
 # ---------------------------------------------------------------------------
 
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         description="Recommend articles based on unknown word frequency."
     )
-    p.add_argument("--freq", required=True, metavar="FILE",
-                   help="Word frequency table (word\\tfreq, one per line).")
-    p.add_argument("--vocab", required=True, metavar="FILE",
-                   help="Known vocabulary file, one word per line.")
-    p.add_argument("--articles", required=True, metavar="DIR",
-                   help="Directory of scraped articles.")
-    p.add_argument("--dict", metavar="FILE", default=None,
-                   help="Reference dictionary (e.g. MOE). Tokens not in this "
-                        "dictionary are ignored.")
-    p.add_argument("-n", type=int, default=10, metavar="N",
-                   help="Number of top articles to recommend (default: 10).")
-    p.add_argument("--source", metavar="NAME",
-                   help="Only consider articles from this source (substring match).")
-    p.add_argument("--heuristic", choices=list(HEURISTICS), default="avg",
-                   help="Scoring heuristic: avg (default) or total.")
-    p.add_argument("--model", metavar="MODEL", default=None,
-                   help="pkuseg domain model: news, web, medicine, tourism.")
-    p.add_argument("-v", "--verbose", action="store_true",
-                   help="Print per-article stats alongside recommendations.")
+    p.add_argument(
+        "--freq",
+        required=True,
+        metavar="FILE",
+        help="Word frequency table (word\\tfreq, one per line).",
+    )
+    p.add_argument(
+        "--vocab",
+        required=True,
+        metavar="FILE",
+        help="Known vocabulary file, one word per line.",
+    )
+    p.add_argument(
+        "--articles",
+        required=True,
+        metavar="DIR",
+        help="Directory of scraped articles.",
+    )
+    p.add_argument(
+        "--dict",
+        metavar="FILE",
+        default=None,
+        help="Reference dictionary (e.g. MOE). Tokens not in this "
+        "dictionary are ignored.",
+    )
+    p.add_argument(
+        "-n",
+        type=int,
+        default=10,
+        metavar="N",
+        help="Number of top articles to recommend (default: 10).",
+    )
+    p.add_argument(
+        "--source",
+        metavar="NAME",
+        help="Only consider articles from this source (substring match).",
+    )
+    p.add_argument(
+        "--heuristic",
+        choices=list(HEURISTICS),
+        default="avg",
+        help="Scoring heuristic: avg (default) or total.",
+    )
+    p.add_argument(
+        "--model",
+        metavar="MODEL",
+        default=None,
+        help="pkuseg domain model: news, web, medicine, tourism.",
+    )
+    p.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Print per-article stats alongside recommendations.",
+    )
     return p
 
 
@@ -243,10 +291,12 @@ def main():
         sys.exit(1)
 
     results.sort(reverse=True)
-    print(f"\nTop {args.n} recommendations "
-          f"(scored {len(results)} articles, heuristic={args.heuristic}):\n")
+    print(
+        f"\nTop {args.n} recommendations "
+        f"(scored {len(results)} articles, heuristic={args.heuristic}):\n"
+    )
 
-    for rank, (score, url, title, stats) in enumerate(results[:args.n], 1):
+    for rank, (score, url, title, stats) in enumerate(results[: args.n], 1):
         print(f"{rank:>3}. [{score:>10.1f}] {title}")
         print(f"       {url}")
         if args.verbose:

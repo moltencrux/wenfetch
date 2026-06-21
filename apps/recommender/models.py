@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 
 class FreqEntry(models.Model):
     """Corpus word frequency table, loaded from freq.tsv."""
-
     word = models.CharField(max_length=50, unique=True, db_index=True)
     frequency = models.IntegerField()
 
@@ -16,17 +15,12 @@ class FreqEntry(models.Model):
 
 
 class ArticleToken(models.Model):
-    """
-    Pre-segmented tokens for each scraped article.
-    article_key is the 16-char URL hash used in the file store.
-    """
-
+    """Pre-segmented tokens for each scraped article."""
     article_key = models.CharField(max_length=16, db_index=True)
     source = models.CharField(max_length=200, db_index=True)
     token = models.CharField(max_length=50, db_index=True)
 
     class Meta:
-        # Each token appears once per article (unique words, not occurrences)
         unique_together = ("article_key", "token")
         indexes = [
             models.Index(fields=["token", "article_key"]),
@@ -38,8 +32,8 @@ class ArticleToken(models.Model):
 
 class VocabList(models.Model):
     """A named vocabulary list belonging to a user."""
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="vocab_lists")
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
+                             related_name="vocab_lists")
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -54,10 +48,8 @@ class VocabList(models.Model):
 
 class VocabEntry(models.Model):
     """A single word in a vocabulary list."""
-
-    vocab_list = models.ForeignKey(
-        VocabList, on_delete=models.CASCADE, related_name="entries"
-    )
+    vocab_list = models.ForeignKey(VocabList, on_delete=models.CASCADE,
+                                   related_name="entries")
     word = models.CharField(max_length=50, db_index=True)
 
     class Meta:

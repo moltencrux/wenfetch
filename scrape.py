@@ -61,19 +61,22 @@ def discover_articles(source: dict, limit: int, depth: int) -> list[Article]:
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="Scrape Chinese news articles.")
     p.add_argument(
-        "-c", "--config",
+        "-c",
+        "--config",
         default="sources.yaml",
         metavar="CONFIG",
         help="Path to sources YAML file (default: sources.yaml).",
     )
     p.add_argument(
-        "-o", "--output-dir",
+        "-o",
+        "--output-dir",
         default="articles",
         metavar="DIR",
         help="Directory to store articles (default: ./articles).",
     )
     p.add_argument(
-        "-s", "--source",
+        "-s",
+        "--source",
         metavar="NAME",
         help="Only scrape the named source (substring match).",
     )
@@ -139,8 +142,11 @@ def main():
                 fetched += 1
             else:
                 failed += 1
-            print(f"[{name}] {i+1}/{len(pending)} fetched={fetched} failed={failed}",
-                  end="\r", file=sys.stderr)
+            print(
+                f"[{name}] {i+1}/{len(pending)} fetched={fetched} failed={failed}",
+                end="\r",
+                file=sys.stderr,
+            )
 
         print(f"\n[{name}] done — {fetched} saved, {failed} failed", file=sys.stderr)
 

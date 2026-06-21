@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}刪除詞彙表{% endblock %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+    <div class="card border-danger">
+      <div class="card-header text-danger">確認刪除</div>
+      <div class="card-body">
+        <p>確定要刪除詞彙表 <strong>{{ vocab_list.name }}</strong> 嗎？</p>
+        <p class="text-muted small">此操作無法復原，所有詞彙將一併刪除。</p>
+        <form method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">確認刪除</button>
+          <a href="{% url 'vocab_list_detail' vocab_list.pk %}" class="btn btn-link">取消</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -59,8 +59,9 @@ def save(base_dir: Path, article: Article) -> None:
         "published": article.date.isoformat() if article.date else None,
         "fetched_at": datetime.now(timezone.utc).isoformat(),
     }
-    meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2),
-                         encoding="utf-8")
+    meta_path.write_text(
+        json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
 
 
 def load(base_dir: Path, source: str, url: str) -> Article | None:
@@ -73,6 +74,7 @@ def load(base_dir: Path, source: str, url: str) -> Article | None:
     text = text_path.read_text(encoding="utf-8") if text_path.exists() else ""
 
     from datetime import datetime
+
     date = None
     if meta.get("published"):
         try:
@@ -105,7 +107,9 @@ def iter_articles(base_dir: Path, source: str | None = None) -> list[Article]:
             text_path = meta_path.with_suffix(".txt")
             try:
                 meta = json.loads(meta_path.read_text(encoding="utf-8"))
-                text = text_path.read_text(encoding="utf-8") if text_path.exists() else ""
+                text = (
+                    text_path.read_text(encoding="utf-8") if text_path.exists() else ""
+                )
                 date = None
                 if meta.get("published"):
                     try:

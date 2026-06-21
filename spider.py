@@ -89,6 +89,8 @@ def fetch_index(source: dict, max_articles: int = 20, depth: int = 2) -> list[Ar
                     print(f"[{name}] following: {link}", file=sys.stderr)
                     queue.append((link, current_depth + 1))
 
-    print(f"[{name}] crawled {len(visited)} pages, found {len(articles)} articles",
-          file=sys.stderr)
+    print(
+        f"[{name}] crawled {len(visited)} pages, found {len(articles)} articles",
+        file=sys.stderr,
+    )
     return articles
