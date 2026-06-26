@@ -7,7 +7,7 @@ from email.utils import parsedate_to_datetime
 
 import feedparser
 
-from article import Article
+from article import Article, normalize_date
 
 
 def _parse_date(entry) -> datetime | None:
@@ -47,12 +47,15 @@ def fetch_feed(source: dict) -> list[Article]:
             continue
         if not _check_url(url, pattern, name):
             continue
+        date = _parse_date(entry)
+        if date:
+            date = normalize_date(date)
         articles.append(
             Article(
                 url=url,
                 source=name,
                 title=getattr(entry, "title", ""),
-                date=_parse_date(entry),
+                date=date,
             )
         )
     return articles

@@ -6,17 +6,19 @@ Strategy:
   - URLs not matching article_regex are queued for further crawling (up to depth)
   - All crawling stays within the same domain
   - Visited URLs are tracked to avoid re-crawling
+Yields Article stubs lazily (BFS order).
 """
 
 import re
 import sys
 from collections import deque
 from urllib.parse import urljoin, urlparse
+from typing import Iterator
 
 import trafilatura
 from trafilatura.utils import load_html
 
-from article import Article
+from article import Article, normalize_date
 
 
 def _same_domain(base: str, url: str) -> bool:
@@ -41,13 +43,10 @@ def _extract_links(downloaded: str, base_url: str) -> list[str]:
     return links
 
 
-def fetch_index(source: dict, max_articles: int = 20, depth: int = 2) -> list[Article]:
+def fetch_index(source: dict, max_articles: int = 100, depth: int = 3) -> Iterator[Article]:
     """
-    Crawl a site starting from source['url'] up to `depth` levels deep.
-
-    URLs matching article_regex are collected as articles.
-    URLs not matching article_regex are followed as navigation pages (up to depth).
-    Returns at most max_articles Article stubs (text not yet fetched).
+    Generator: Crawl site starting from source['url'].
+    Yields Article stubs (with early date if possible).
     """
     base_url = source["url"]
     name = source["name"]
@@ -57,10 +56,10 @@ def fetch_index(source: dict, max_articles: int = 20, depth: int = 2) -> list[Ar
     # Queue entries are (url, current_depth)
     queue: deque[tuple[str, int]] = deque([(base_url, 0)])
     visited: set[str] = set()
-    articles: list[Article] = []
     article_urls: set[str] = set()
+    yielded = 0
 
-    while queue and len(articles) < max_articles:
+    while queue and yielded < max_articles:
         url, current_depth = queue.popleft()
         if url in visited:
             continue
@@ -77,20 +76,29 @@ def fetch_index(source: dict, max_articles: int = 20, depth: int = 2) -> list[Ar
             if link in visited:
                 continue
             if pattern and pattern.search(link):
-                # It's an article URL
                 if link not in article_urls:
                     article_urls.add(link)
-                    articles.append(Article(url=link, source=name))
-                    if len(articles) >= max_articles:
-                        break
+                    art = Article(url=link, source=name)
+
+                    # Attempt early date extraction from listing page
+                    try:
+                        meta = trafilatura.extract_metadata(downloaded)
+                        if meta and meta.date:
+                            art.date = normalize_date(meta.date)
+                    except Exception:
+                        pass
+
+                    yield art
+                    yielded += 1
+                    if yielded >= max_articles:
+                        return
             else:
-                # It's a navigation page — follow it if we have depth remaining
+                # Navigation page
                 if current_depth < depth and link not in visited:
                     print(f"[{name}] following: {link}", file=sys.stderr)
                     queue.append((link, current_depth + 1))
 
     print(
-        f"[{name}] crawled {len(visited)} pages, found {len(articles)} articles",
+        f"[{name}] crawled {len(visited)} pages, yielded {yielded} articles",
         file=sys.stderr,
     )
-    return articles

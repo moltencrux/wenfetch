@@ -2,12 +2,12 @@
 
 import trafilatura
 
-from article import Article
+from article import Article, normalize_date
 
 
 def extract(article: Article) -> Article:
     """
-    Fetch an article URL and populate article.text and article.title.
+    Fetch an article URL and populate article.text, article.title, and article.date.
     Returns the same Article object (mutated in place) for easy chaining.
     """
     downloaded = trafilatura.fetch_url(article.url)
@@ -23,11 +23,15 @@ def extract(article: Article) -> Article:
     if text:
         article.text = text
 
-    # Extract title if not already set (e.g. for spider-sourced articles)
-    if not article.title:
+    # Extract title and date if not already set (e.g. for spider-sourced articles)
+    if not article.title or not article.date:
         metadata = trafilatura.extract_metadata(downloaded)
-        if metadata and metadata.title:
-            article.title = metadata.title
+        if metadata:
+            if not article.title and metadata.title:
+                article.title = metadata.title
+            # NEW: Extract publish date from metadata (trafilatura returns datetime-aware or str in some cases)
+            if not article.date and metadata.date:
+                article.date = normalize_date(metadata.date)
 
     return article
 

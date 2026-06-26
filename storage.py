@@ -13,7 +13,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from article import Article
+from article import Article, normalize_date
 
 
 def url_to_key(url: str) -> str:
@@ -79,6 +79,7 @@ def load(base_dir: Path, source: str, url: str) -> Article | None:
     if meta.get("published"):
         try:
             date = datetime.fromisoformat(meta["published"])
+            date = normalize_date(date)
         except ValueError:
             pass
 
@@ -114,6 +115,7 @@ def iter_articles(base_dir: Path, source: str | None = None) -> list[Article]:
                 if meta.get("published"):
                     try:
                         date = datetime.fromisoformat(meta["published"])
+                        date = normalize_date(date)
                     except ValueError:
                         pass
                 yield Article(
