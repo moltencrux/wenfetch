@@ -43,14 +43,14 @@ def _extract_links(downloaded: str, base_url: str) -> list[str]:
     return links
 
 
-def fetch_index(source: dict, max_articles: int = 100, depth: int = 3) -> Iterator[Article]:
+def fetch_index(source: dict) -> Iterator[Article]:
     """
     Generator: Crawl site starting from source['url'].
     Yields Article stubs (with early date if possible).
     """
     base_url = source["url"]
     name = source["name"]
-    depth = source.get("depth", depth)
+    # depth = source.get("depth", depth)
     pattern = re.compile(source["article_regex"]) if "article_regex" in source else None
 
     # Queue entries are (url, current_depth)
@@ -59,7 +59,7 @@ def fetch_index(source: dict, max_articles: int = 100, depth: int = 3) -> Iterat
     article_urls: set[str] = set()
     yielded = 0
 
-    while queue and yielded < max_articles:
+    while queue:
         url, current_depth = queue.popleft()
         if url in visited:
             continue
@@ -88,15 +88,11 @@ def fetch_index(source: dict, max_articles: int = 100, depth: int = 3) -> Iterat
                     except Exception:
                         pass
 
-                    yield art
                     yielded += 1
-                    if yielded >= max_articles:
-                        return
-            else:
-                # Navigation page
-                if current_depth < depth and link not in visited:
-                    print(f"[{name}] following: {link}", file=sys.stderr)
-                    queue.append((link, current_depth + 1))
+                    yield art, current_depth
+            elif link not in visited:
+                print(f"[{name}] following: {link}", file=sys.stderr)
+                queue.append((link, current_depth + 1))
 
     print(
         f"[{name}] crawled {len(visited)} pages, yielded {yielded} articles",

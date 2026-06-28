@@ -13,6 +13,6 @@ services:
       SECURE_PROXY_SSL_HEADER: '("HTTP_X_FORWARDED_PROTO", "https")'
       GUNICORN_CMD_ARGS: ${GUNICORN_CMD_ARGS:---timeout 120 --keep-alive 30 --log-level info}
     volumes:
-      - ../data:/app/data:Z
+      - ../data:/app/data:z
     expose:
       - "8000"

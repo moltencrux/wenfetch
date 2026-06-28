@@ -18,7 +18,7 @@ RUN python -c "import spacy_pkuseg; spacy_pkuseg.pkuseg()"
 
 COPY . .
 
-RUN python manage.py collectstatic --noinput
+RUN DJANGO_SECRET_KEY=dummy-build-key python manage.py collectstatic --noinput
 
 EXPOSE 8000
 

@@ -1,0 +1,11 @@
+services:
+  cron:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.cron
+    restart: unless-stopped
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.prod
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+    volumes:
+      - ../data:/app/data:z

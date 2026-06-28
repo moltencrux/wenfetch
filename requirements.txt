@@ -8,3 +8,4 @@ opencc-python-reimplemented>=0.1.7
 whitenoise>=6.7
 gunicorn>=22.0
 PyYAML
+requests-ratelimiter
