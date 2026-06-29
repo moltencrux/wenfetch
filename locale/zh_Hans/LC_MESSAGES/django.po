@@ -1,0 +1,247 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-01 01:29+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: apps/recommender/templates/recommender/recommend.html:3
+#: templates/base.html:10 templates/base.html:20
+msgid "Article Recommendations"
+msgstr "文章推荐"
+
+#: apps/recommender/templates/recommender/recommend.html:7
+msgid "Search settings"
+msgstr "搜寻设定"
+
+#: apps/recommender/templates/recommender/recommend.html:11
+msgid "Vocabulary lists"
+msgstr "我的词汇"
+
+#: apps/recommender/templates/recommender/recommend.html:13
+msgid "Select vocabulary list"
+msgstr "选择词汇表"
+
+#: apps/recommender/templates/recommender/recommend.html:25
+msgid "Source (optional)"
+msgstr "来源 (选填)"
+
+#: apps/recommender/templates/recommender/recommend.html:27
+msgid "All sources"
+msgstr "所有来源"
+
+#: apps/recommender/templates/recommender/recommend.html:34
+msgid "Scoring method"
+msgstr "评分方式"
+
+#: apps/recommender/templates/recommender/recommend.html:36
+msgid "average frequency (default)"
+msgstr "平均频率 (预设)"
+
+#: apps/recommender/templates/recommender/recommend.html:37
+msgid "total frequency"
+msgstr "总频率"
+
+#: apps/recommender/templates/recommender/recommend.html:41
+msgid "Number of recommendations"
+msgstr "推荐数量"
+
+#: apps/recommender/templates/recommender/recommend.html:44
+#: apps/recommender/templates/recommender/vocab_list_detail.html:10
+msgid "Get recommendations"
+msgstr "取得推荐"
+
+#: apps/recommender/templates/recommender/recommend.html:48
+msgid "Recommendations"
+msgstr "文章推荐"
+
+#: apps/recommender/templates/recommender/recommend.html:48
+msgid "article(s)"
+msgstr "篇"
+
+#: apps/recommender/templates/recommender/recommend.html:67
+msgid "unkonwn words"
+msgstr "未知词"
+
+#: apps/recommender/templates/recommender/recommend.html:67
+msgid "top unknown words"
+msgstr "个未知词 · 高频未知词："
+
+#: apps/recommender/templates/recommender/recommend.html:76
+msgid "no articles match the search requirements."
+msgstr "没有找到符合条件的文章"
+
+#: apps/recommender/templates/recommender/recommend.html:78
+msgid "Select vocabulary list and press \"Get recommendations\"."
+msgstr "选择词汇表并按下「取得推荐」。"
+
+#: apps/recommender/templates/recommender/vocab_list_confirm_delete.html:3
+msgid "Delete vocabulary list"
+msgstr "删除词汇表"
+
+#: apps/recommender/templates/recommender/vocab_list_confirm_delete.html:8
+#: apps/recommender/templates/recommender/vocab_list_confirm_delete.html:18
+msgid "Confirm deletion"
+msgstr "确认删除"
+
+#: apps/recommender/templates/recommender/vocab_list_confirm_delete.html:11
+#, python-format
+msgid "Are you sure you want to delete <strong>%(name)s</strong>?"
+msgstr "确定要删除词汇表 <strong>%(name)s</strong> 吗？"
+
+#: apps/recommender/templates/recommender/vocab_list_confirm_delete.html:19
+#: apps/recommender/templates/recommender/vocab_list_create.html:16
+msgid "Cancel"
+msgstr "取消"
+
+#: apps/recommender/templates/recommender/vocab_list_create.html:3
+#: apps/recommender/templates/recommender/vocab_list_create.html:7
+msgid "Add new vocabulary list"
+msgstr "新增词汇表"
+
+#: apps/recommender/templates/recommender/vocab_list_create.html:11
+msgid "name"
+msgstr "名称"
+
+#: apps/recommender/templates/recommender/vocab_list_create.html:13
+msgid "For example: HSK4, my vocabulary"
+msgstr "例如：HSK4、个人词汇"
+
+#: apps/recommender/templates/recommender/vocab_list_create.html:15
+msgid "New"
+msgstr "建立"
+
+#: apps/recommender/templates/recommender/vocab_list_detail.html:8
+#: apps/recommender/templates/recommender/vocab_list_index.html:17
+msgid "words"
+msgstr "个词"
+
+#: apps/recommender/templates/recommender/vocab_list_detail.html:11
+msgid "Delete"
+msgstr "删除"
+
+#: apps/recommender/templates/recommender/vocab_list_detail.html:15
+msgid "Add vocabulary"
+msgstr "汇入词汇"
+
+#: apps/recommender/templates/recommender/vocab_list_detail.html:21
+msgid "Paste"
+msgstr "贴上文字"
+
+#: apps/recommender/templates/recommender/vocab_list_detail.html:24
+msgid "Upload file"
+msgstr "上传档案"
+
+#: apps/recommender/templates/recommender/vocab_list_detail.html:34
+msgid "supported formats: .txt, .tsv, (UTF-8 encoding)"
+msgstr "支援 .txt 或 .tsv 格式，UTF-8 编码。"
+
+#: apps/recommender/templates/recommender/vocab_list_detail.html:37
+msgid "Add"
+msgstr "汇入"
+
+#: apps/recommender/templates/recommender/vocab_list_detail.html:42
+msgid "Known vocabulary"
+msgstr "已知词汇"
+
+#: apps/recommender/templates/recommender/vocab_list_detail.html:49
+msgid "no vocabulary entered."
+msgstr "尚未汇入任"
+
+#: apps/recommender/templates/recommender/vocab_list_detail.html:54
+msgid "instructions"
+msgstr "说明"
+
+#: apps/recommender/templates/recommender/vocab_list_detail.html:56
+msgid ""
+"Enter one word per line. Tab-separated comments are allowed and will be "
+"automatically ignored."
+msgstr "每行输入一个词。可以包含 tab 分隔的注释，系统会自动忽略。"
+
+#: apps/recommender/templates/recommender/vocab_list_detail.html:57
+msgid ""
+"Either traditional or simplified Chinese is acceptable; the system will "
+"convert them automatically."
+msgstr "繁体或简体均可，系统会自动转换。"
+
+#: apps/recommender/templates/recommender/vocab_list_detail.html:58
+msgid "Duplicate words will be automatically ignored."
+msgstr "重复的词汇会被自动略过。"
+
+#: apps/recommender/templates/recommender/vocab_list_index.html:3
+#: apps/recommender/templates/recommender/vocab_list_index.html:8
+msgid "My vocabulary lists"
+msgstr "我的词汇表"
+
+#: apps/recommender/templates/recommender/vocab_list_index.html:9
+msgid "Add vocabulary list"
+msgstr "新增词汇表"
+
+#: apps/recommender/templates/recommender/vocab_list_index.html:22
+#, fuzzy
+#| msgid "Vocabulary lists"
+msgid "no vocublary lists exist."
+msgstr "我的词汇"
+
+#: config/settings/base.py:65
+msgid "English"
+msgstr ""
+
+#: config/settings/base.py:66
+msgid "繁體中文"
+msgstr ""
+
+#: config/settings/base.py:67
+msgid "简体中文"
+msgstr ""
+
+#: templates/base.html:23
+msgid "My Vocabulary"
+msgstr "我的词汇"
+
+#: templates/base.html:24
+msgid "Recommended Articles"
+msgstr "推荐文章"
+
+#: templates/base.html:25
+msgid "Logout"
+msgstr "登出"
+
+#: templates/base.html:27 templates/registration/login.html:3
+#: templates/registration/login.html:7 templates/registration/login.html:22
+msgid "Login"
+msgstr "登入"
+
+#: templates/base.html:28 templates/registration/login.html:24
+#: templates/registration/register.html:3
+#: templates/registration/register.html:22
+msgid "Register"
+msgstr "注册"
+
+#: templates/registration/login.html:24
+msgid "Don't have an account?"
+msgstr "还没有帐号？"
+
+#: templates/registration/register.html:7
+msgid "Create an account"
+msgstr "建立帐号"
+
+#: templates/registration/register.html:24
+msgid "Already have an account?"
+msgstr "已有帐号"
+
+#~ msgid "length"
+#~ msgstr "篇"

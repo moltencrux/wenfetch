@@ -27,3 +27,7 @@ articles/
 
 # Secrets
 .env
+
+# Translations
+*.mo
+locale/*/LC_MESSAGES/*.mo

@@ -1,18 +1,19 @@
 {% extends "base.html" %}
-{% block title %}新增詞彙表{% endblock %}
+{% load i18n %}
+{% block title %}{% translate 'Add new vocabulary list' %}{% endblock %}
 {% block content %}
 <div class="row justify-content-center mt-4">
   <div class="col-md-5">
-    <h4 class="mb-3">新增詞彙表</h4>
+    <h4 class="mb-3">{% translate 'Add new vocabulary list' %}</h4>
     <form method="post">
       {% csrf_token %}
       <div class="mb-3">
-        <label class="form-label">名稱</label>
+        <label class="form-label">{% translate 'name' %}</label>
         <input type="text" name="name" class="form-control"
-               placeholder="例如：HSK4、個人詞彙" autofocus required>
+               placeholder="{% translate 'For example: HSK4, my vocabulary' %}" autofocus required>
       </div>
-      <button type="submit" class="btn btn-primary">建立</button>
-      <a href="{% url 'vocab_list_index' %}" class="btn btn-link">取消</a>
+      <button type="submit" class="btn btn-primary">{% translate 'New' %}</button>
+      <a href="{% url 'vocab_list_index' %}" class="btn btn-link">{% translate 'Cancel' %}</a>
     </form>
   </div>
 </div>

@@ -1,26 +1,27 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block title %}{{ vocab_list.name }}{% endblock %}
 {% block content %}
 <div class="row mt-4">
   <div class="col-md-7">
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h4>{{ vocab_list.name }} <small class="text-muted fs-6">{{ entry_count }} 個詞</small></h4>
+      <h4>{{ vocab_list.name }} <small class="text-muted fs-6">{{ entry_count }}{% translate 'words' %}</small></h4>
       <div>
-        <a href="{% url 'recommend' %}" class="btn btn-primary btn-sm">取得推薦</a>
-        <a href="{% url 'vocab_list_delete' vocab_list.pk %}" class="btn btn-outline-danger btn-sm ms-1">刪除</a>
+        <a href="{% url 'recommend' %}" class="btn btn-primary btn-sm">{% translate 'Get recommendations' %}</a>
+        <a href="{% url 'vocab_list_delete' vocab_list.pk %}" class="btn btn-outline-danger btn-sm ms-1">{% translate 'Delete' %}</a>
       </div>
     </div>
     <div class="card mb-4">
-      <div class="card-header">匯入詞彙</div>
+      <div class="card-header">{% translate 'Add vocabulary' %}</div>
       <div class="card-body">
         <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
           <ul class="nav nav-tabs mb-3">
             <li class="nav-item">
-              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#pasteTab" type="button">貼上文字</button>
+              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#pasteTab" type="button">{% translate 'Paste' %}</button>
             </li>
             <li class="nav-item">
-              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#uploadTab" type="button">上傳檔案</button>
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#uploadTab" type="button">{% translate 'Upload file' %}</button>
             </li>
           </ul>
           <div class="tab-content">
@@ -30,31 +31,31 @@
             </div>
             <div class="tab-pane fade" id="uploadTab">
               <input type="file" name="vocab_file" class="form-control" accept=".txt,.tsv">
-              <div class="form-text">支援 .txt 或 .tsv 格式，UTF-8 編碼。</div>
+              <div class="form-text">{% translate 'supported formats: .txt, .tsv, (UTF-8 encoding)' %}</div>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary mt-3">匯入</button>
+          <button type="submit" class="btn btn-primary mt-3">{% translate 'Add' %}</button>
         </form>
       </div>
     </div>
     {% if entries %}
-      <h6 class="text-muted">已知詞彙</h6>
+      <h6 class="text-muted">{% translate 'Known vocabulary' %}</h6>
       <div class="d-flex flex-wrap gap-1">
         {% for entry in entries %}
           <span class="badge bg-light text-dark border">{{ entry.word }}</span>
         {% endfor %}
       </div>
     {% else %}
-      <p class="text-muted">尚未匯入任何詞彙。</p>
+      <p class="text-muted">{% translate 'no vocabulary entered.' %} 尚未匯入任何詞彙。</p>
     {% endif %}
   </div>
   <div class="col-md-4 offset-md-1">
     <div class="card">
-      <div class="card-header">說明</div>
+      <div class="card-header">{% translate 'instructions' %}</div>
       <div class="card-body small text-muted">
-        <p>每行輸入一個詞。可以包含 tab 分隔的注釋，系統會自動忽略。</p>
-        <p>繁體或簡體均可，系統會自動轉換。</p>
-        <p>重複的詞彙會被自動略過。</p>
+        <p>{% translate 'Enter one word per line. Tab-separated comments are allowed and will be automatically ignored.' %}</p>
+        <p>{% translate 'Either traditional or simplified Chinese is acceptable; the system will convert them automatically.' %}</p>
+        <p>{% translate 'Duplicate words will be automatically ignored.' %}</p>
       </div>
     </div>
   </div>
