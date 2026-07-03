@@ -4,6 +4,7 @@ Views should be thin — all non-trivial logic lives here.
 """
 
 import json
+import heapq
 from pathlib import Path
 from string import printable
 
@@ -126,7 +127,7 @@ def recommend(
         articles[key]["tokens"].append((row["token"], freq_map.get(row["token"], 0)))
 
     # Score and sort
-    results = []
+    heap = []  # min-heap of (score, entry)
     for key, data in articles.items():
         tokens = data["tokens"]
         if not tokens:
@@ -138,17 +139,22 @@ def recommend(
             score = float(sum(freqs))
         top = sorted(tokens, key=lambda x: x[1], reverse=True)[:10]
 
-        results.append(
-            {
-                "article_key": key,
-                "source": data["source"],
-                "score": score,
-                "unknown_count": len(tokens),
-                "top_unknown": [w for w, _ in top],
-            }
-        )
+    
+        entry = {
+            "article_key": key,
+            "source": data["source"],
+            "score": score,
+            "unknown_count": len(tokens),
+            "top_unknown": [w for w, _ in top],
+        }
 
-    results.sort(key=lambda x: x["score"], reverse=True)
+        # Maintain top N using heap
+        if len(heap) < n:
+            heapq.heappush(heap, (score, entry))
+        else:
+            heapq.heappushpop(heap, (score, entry))  # push new, pop smallest if better
+
+    results = [entry for score, entry in sorted(heap, reverse=True)]
     return results[:n]
 
 
