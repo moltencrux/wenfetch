@@ -9,4 +9,5 @@ urlpatterns = [
     path("vocab/new/", views.vocab_list_create, name="vocab_list_create"),
     path("vocab/<int:pk>/", views.vocab_list_detail, name="vocab_list_detail"),
     path("vocab/<int:pk>/delete/", views.vocab_list_delete, name="vocab_list_delete"),
+    path("toggle-script/", views.toggle_script_pref, name="toggle_script_pref"),
 ]

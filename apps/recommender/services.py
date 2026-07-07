@@ -11,6 +11,7 @@ from django.conf import settings
 from django.db import transaction
 
 from .models import ArticleToken, FreqEntry, VocabEntry, VocabList
+from .utils import process_vocab_entry_on_add
 
 FILTER_CHARS = set(printable)
 
@@ -41,26 +42,32 @@ def parse_vocab_text(text: str) -> list[str]:
         word = word.split("[")[0].strip()
         if not set(word) - FILTER_CHARS:
             continue
-        if HAS_OPENCC:
-            word = _t2s.convert(word)
         words.append(word)
     return words
 
 
 def import_vocab(vocab_list: VocabList, text: str) -> tuple[int, int]:
     """
-    Import words from text into a vocab list.
-    Returns (added, skipped) counts.
+    Import words using the new processing logic.
     """
-    words = parse_vocab_text(text)
+    raw_words = parse_vocab_text(text)
+
     existing = set(
-        VocabEntry.objects.filter(vocab_list=vocab_list).values_list("word", flat=True)
+        VocabEntry.objects.filter(vocab_list=vocab_list)
+        .values_list("word", flat=True)   # we'll improve this later
     )
-    to_add = [
-        VocabEntry(vocab_list=vocab_list, word=w) for w in words if w not in existing
-    ]
-    VocabEntry.objects.bulk_create(to_add, ignore_conflicts=True)
-    return len(to_add), len(words) - len(to_add)
+
+    new_words = {
+        process_vocab_entry_on_add(w) for w in raw_words if w not in existing
+    }
+
+    to_add = [VocabEntry(vocab_list=vocab_list, word=w) for w in new_words]
+
+    if to_add:
+        VocabEntry.objects.bulk_create(list(to_add), ignore_conflicts=True)
+
+    skipped = len(raw_words) - len(to_add)
+    return len(to_add), skipped
 
 
 # ---------------------------------------------------------------------------
@@ -84,14 +91,16 @@ def recommend(
     Returns a list of dicts with keys:
         article_key, source, score, unknown_count, top_unknown
     """
-    vocab_words = VocabEntry.objects.filter(vocab_list=vocab_list).values_list(
-        "word", flat=True
-    )
+    # Get all user vocab entries
+    user_words = VocabEntry.objects.filter(vocab_list=vocab_list).values_list('word', flat=True)
+    
+    # Build set of normalized (simplified) known words
+    vocab_normalized = {process_vocab_entry_on_add(w) for w in user_words}
 
-    # Tokens that are in the freq table but not in user vocab
+    # Rest of the function stays mostly the same, but use vocab_normalized
     qs = ArticleToken.objects.filter(
         token__in=FreqEntry.objects.values_list("word", flat=True)
-    ).exclude(token__in=vocab_words)
+    ).exclude(token__in=vocab_normalized)
 
     if source:
         qs = qs.filter(source=source)
@@ -128,6 +137,7 @@ def recommend(
         else:  # total
             score = float(sum(freqs))
         top = sorted(tokens, key=lambda x: x[1], reverse=True)[:10]
+
         results.append(
             {
                 "article_key": key,

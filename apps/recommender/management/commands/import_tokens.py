@@ -20,6 +20,8 @@ import spacy_pkuseg as pkuseg
 
 from apps.recommender.models import ArticleToken
 
+from apps.recommender.utils import process_vocab_entry_on_add
+
 try:
     import opencc
     _t2s = opencc.OpenCC("t2s")
@@ -46,8 +48,7 @@ def load_wordlist(path: str) -> set[str]:
             word = word.split("[")[0].strip()
             if not set(word) - FILTER_CHARS:
                 continue
-            if HAS_OPENCC:
-                word = _t2s.convert(word)
+            word = process_vocab_entry_on_add(word)
             words.add(word)
     return words
 
@@ -66,12 +67,14 @@ def tokenize(text: str, seg, reference: set[str] | None = None) -> set[str]:
         if HAS_OPENCC:
             line = _t2s.convert(line)
         for token in seg.cut(line):
+            token = process_vocab_entry_on_add(token)
             if reference is not None:
                 if token in reference:
                     tokens.add(token)
             else:
                 if set(token) - FILTER_CHARS:
                     tokens.add(token)
+
     return tokens
 
 

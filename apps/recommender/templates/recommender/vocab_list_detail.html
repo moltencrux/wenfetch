@@ -27,7 +27,7 @@
           <div class="tab-content">
             <div class="tab-pane fade show active" id="pasteTab">
               <textarea name="vocab_text" class="form-control" rows="8"
-                        placeholder="每行一個詞，可以包含 tab 分隔的注釋"></textarea>
+                        placeholder="{% translate 'Each line contains one word and may include tab-separated comments.' %}"></textarea>
             </div>
             <div class="tab-pane fade" id="uploadTab">
               <input type="file" name="vocab_file" class="form-control" accept=".txt,.tsv">
@@ -40,11 +40,49 @@
     </div>
     {% if entries %}
       <h6 class="text-muted">{% translate 'Known vocabulary' %}</h6>
-      <div class="d-flex flex-wrap gap-1">
-        {% for entry in entries %}
-          <span class="badge bg-light text-dark border">{{ entry.word }}</span>
-        {% endfor %}
-      </div>
+      
+      <table class="table table-sm align-middle">
+        <thead class="table-light">
+          <tr>
+            <th style="width: 50%;">
+              Word
+              <small class="text-muted">
+                ({% if zh_pref == 'simplified' %}{% translate 'Simplified' %}{% else %}{% translate 'Traditional' %}{% endif %})
+              </small>
+            </th>
+            <th style="width: 50%; white-space: nowrap; ">
+              <span style="display: flex; justify-content: space-between;">
+                <span>
+                  Variant
+                  <small class="text-muted">
+                    ({% if zh_pref == 'simplified' %}{% translate 'Traditional' %}{% else %}{% translate 'Simplified' %}{% endif %})
+                  </small>
+                </span>
+                <span>
+                  <a href="{% url 'toggle_script_pref' %}?next={{ request.path }}"
+                      class="btn btn-outline-secondary btn-sm">
+                    {% if zh_pref == 'traditional' %}{% translate 'T ⇆ S' %}{% else %}{% translate 'S ⇆ T' %}{% endif %}
+                  </a>
+                </span>
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in entries %}
+            <tr>
+              <td><strong>{{ item.display.primary }}</strong></td>
+              <td>
+                {% if item.display.secondary %}
+                  {{ item.display.secondary }}
+                {% else %}
+                  <span class="text-muted">-</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     {% else %}
       <p class="text-muted">{% translate 'no vocabulary entered.' %} 尚未匯入任何詞彙。</p>
     {% endif %}

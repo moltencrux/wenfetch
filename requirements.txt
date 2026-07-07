@@ -9,3 +9,4 @@ whitenoise>=6.7
 gunicorn>=22.0
 PyYAML
 requests-ratelimiter
+hanzidentifier

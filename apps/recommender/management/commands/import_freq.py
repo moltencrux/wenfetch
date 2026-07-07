@@ -11,6 +11,7 @@ from pathlib import Path
 
 from django.core.management.base import BaseCommand, CommandError
 from apps.recommender.models import FreqEntry
+from apps.recommender.utils import process_vocab_entry_on_add
 
 
 class Command(BaseCommand):
@@ -64,6 +65,8 @@ class Command(BaseCommand):
                 if not word or word.startswith("#"):
                     skipped += 1
                     continue
+
+                word = process_vocab_entry_on_add(word)
 
                 try:
                     freq = int(row[1].strip().replace(",", ""))

@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class FreqEntry(models.Model):
     """Corpus word frequency table, loaded from freq.tsv."""
     word = models.CharField(max_length=50, unique=True, db_index=True)
@@ -57,3 +56,11 @@ class VocabEntry(models.Model):
 
     def __str__(self):
         return self.word
+
+class UserProfile(models.Model):  # or just add to User via OneToOne if simple
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    preferred_script = models.CharField(
+        max_length=20,
+        choices=[('simplified', 'Simplified First'), ('traditional', 'Traditional First')],
+        default='traditional'  # or whatever your current default is
+    )

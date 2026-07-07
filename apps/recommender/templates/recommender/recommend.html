@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load opencc_filters %}
 {% block title %}{% translate 'Article Recommendations' %}{% endblock %}
 {% block content %}
 <div class="row mt-4">
@@ -45,7 +46,15 @@
     </form>
   </div>
   <div class="col-md-9">
-    <h5>{% translate 'Recommendations' %} {% if results %}<span class="text-muted fs-6">({{ results|length }} {% translate 'article(s)' %})</span>{% endif %}</h5>
+    <h5 style="display: flex; justify-content: space-between;">
+      <span>{% translate 'Recommendations' %} {% if results %}<span class="text-muted fs-6">({{ results|length }} {% translate 'article(s)' %})</span>{% endif %}</span>
+      <span>
+        <a href="{% url 'toggle_script_pref' %}?next={{ request.path }}"
+            class="btn btn-outline-secondary btn-sm">
+          {% if zh_pref == 'traditional' %}{% translate 'T ⇆ S' %}{% else %}{% translate 'S ⇆ T' %}{% endif %}
+        </a>
+      </span>
+    </h5>
     {% if results %}
       {% for r in results %}
         <div class="card mb-3">
@@ -66,7 +75,7 @@
             <div class="mt-2">
               <small class="text-muted">{{ r.unknown_count }} {% translate 'unkonwn words' %} · {% translate 'top unknown words' %}:</small>
               {% for token in r.top_unknown %}
-                <span class="badge bg-light text-dark border me-1">{{ token }}</span>
+                <span class="badge bg-light text-dark border me-1">{% zhconv_dual token %}</span>
               {% endfor %}
             </div>
           </div>

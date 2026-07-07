@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-01 01:29+0800\n"
+"POT-Creation-Date: 2026-07-10 15:04+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,73 +18,83 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: apps/recommender/templates/recommender/recommend.html:3
+#: apps/recommender/templates/recommender/recommend.html:4
 #: templates/base.html:10 templates/base.html:20
 msgid "Article Recommendations"
 msgstr "文章推薦"
 
-#: apps/recommender/templates/recommender/recommend.html:7
+#: apps/recommender/templates/recommender/recommend.html:8
 msgid "Search settings"
 msgstr "搜尋設定"
 
-#: apps/recommender/templates/recommender/recommend.html:11
+#: apps/recommender/templates/recommender/recommend.html:12
 msgid "Vocabulary lists"
 msgstr "我的詞彙"
 
-#: apps/recommender/templates/recommender/recommend.html:13
+#: apps/recommender/templates/recommender/recommend.html:14
 msgid "Select vocabulary list"
 msgstr "選擇詞彙表"
 
-#: apps/recommender/templates/recommender/recommend.html:25
+#: apps/recommender/templates/recommender/recommend.html:26
 msgid "Source (optional)"
 msgstr "來源 (選填)"
 
-#: apps/recommender/templates/recommender/recommend.html:27
+#: apps/recommender/templates/recommender/recommend.html:28
 msgid "All sources"
 msgstr "所有來源"
 
-#: apps/recommender/templates/recommender/recommend.html:34
+#: apps/recommender/templates/recommender/recommend.html:35
 msgid "Scoring method"
 msgstr "評分方式"
 
-#: apps/recommender/templates/recommender/recommend.html:36
+#: apps/recommender/templates/recommender/recommend.html:37
 msgid "average frequency (default)"
 msgstr "平均頻率 (預設)"
 
-#: apps/recommender/templates/recommender/recommend.html:37
+#: apps/recommender/templates/recommender/recommend.html:38
 msgid "total frequency"
 msgstr "總頻率"
 
-#: apps/recommender/templates/recommender/recommend.html:41
+#: apps/recommender/templates/recommender/recommend.html:42
 msgid "Number of recommendations"
 msgstr "推薦數量"
 
-#: apps/recommender/templates/recommender/recommend.html:44
+#: apps/recommender/templates/recommender/recommend.html:45
 #: apps/recommender/templates/recommender/vocab_list_detail.html:10
 msgid "Get recommendations"
 msgstr "取得推薦"
 
-#: apps/recommender/templates/recommender/recommend.html:48
+#: apps/recommender/templates/recommender/recommend.html:50
 msgid "Recommendations"
 msgstr "文章推薦"
 
-#: apps/recommender/templates/recommender/recommend.html:48
+#: apps/recommender/templates/recommender/recommend.html:50
 msgid "article(s)"
 msgstr "篇"
 
-#: apps/recommender/templates/recommender/recommend.html:67
+#: apps/recommender/templates/recommender/recommend.html:54
+#: apps/recommender/templates/recommender/vocab_list_detail.html:64
+msgid "S ⇆ T"
+msgstr "简⇆繁"
+
+#: apps/recommender/templates/recommender/recommend.html:54
+#: apps/recommender/templates/recommender/vocab_list_detail.html:64
+msgid "T ⇆ S"
+msgstr "繁⇆简"
+
+#: apps/recommender/templates/recommender/recommend.html:76
 msgid "unkonwn words"
 msgstr "未知詞"
 
-#: apps/recommender/templates/recommender/recommend.html:67
+#: apps/recommender/templates/recommender/recommend.html:76
 msgid "top unknown words"
 msgstr "個未知詞 · 高頻未知詞："
 
-#: apps/recommender/templates/recommender/recommend.html:76
+#: apps/recommender/templates/recommender/recommend.html:85
 msgid "no articles match the search requirements."
 msgstr "沒有找到符合條件的文章"
 
-#: apps/recommender/templates/recommender/recommend.html:78
+#: apps/recommender/templates/recommender/recommend.html:87
 msgid "Select vocabulary list and press \"Get recommendations\"."
 msgstr "選擇詞彙表並按下「取得推薦」。"
 
@@ -145,6 +155,10 @@ msgstr "貼上文字"
 msgid "Upload file"
 msgstr "上傳檔案"
 
+#: apps/recommender/templates/recommender/vocab_list_detail.html:30
+msgid "Each line contains one word and may include tab-separated comments."
+msgstr "每行一個詞，可以包含 tab 分隔的注釋"
+
 #: apps/recommender/templates/recommender/vocab_list_detail.html:34
 msgid "supported formats: .txt, .tsv, (UTF-8 encoding)"
 msgstr "支援 .txt 或 .tsv 格式，UTF-8 編碼。"
@@ -157,27 +171,37 @@ msgstr "匯入"
 msgid "Known vocabulary"
 msgstr "已知詞彙"
 
-#: apps/recommender/templates/recommender/vocab_list_detail.html:49
+#: apps/recommender/templates/recommender/vocab_list_detail.html:50
+#: apps/recommender/templates/recommender/vocab_list_detail.html:58
+msgid "Simplified"
+msgstr ""
+
+#: apps/recommender/templates/recommender/vocab_list_detail.html:50
+#: apps/recommender/templates/recommender/vocab_list_detail.html:58
+msgid "Traditional"
+msgstr ""
+
+#: apps/recommender/templates/recommender/vocab_list_detail.html:87
 msgid "no vocabulary entered."
 msgstr "尚未匯入任"
 
-#: apps/recommender/templates/recommender/vocab_list_detail.html:54
+#: apps/recommender/templates/recommender/vocab_list_detail.html:92
 msgid "instructions"
 msgstr "說明"
 
-#: apps/recommender/templates/recommender/vocab_list_detail.html:56
+#: apps/recommender/templates/recommender/vocab_list_detail.html:94
 msgid ""
 "Enter one word per line. Tab-separated comments are allowed and will be "
 "automatically ignored."
 msgstr "每行輸入一個詞。可以包含 tab 分隔的注釋，系統會自動忽略。"
 
-#: apps/recommender/templates/recommender/vocab_list_detail.html:57
+#: apps/recommender/templates/recommender/vocab_list_detail.html:95
 msgid ""
 "Either traditional or simplified Chinese is acceptable; the system will "
 "convert them automatically."
 msgstr "繁體或簡體均可，系統會自動轉換。"
 
-#: apps/recommender/templates/recommender/vocab_list_detail.html:58
+#: apps/recommender/templates/recommender/vocab_list_detail.html:96
 msgid "Duplicate words will be automatically ignored."
 msgstr "重複的詞彙會被自動略過。"
 
@@ -196,36 +220,36 @@ msgstr "新增詞彙表"
 msgid "no vocublary lists exist."
 msgstr "我的詞彙"
 
-#: config/settings/base.py:65
+#: config/settings/base.py:66
 msgid "English"
 msgstr ""
 
-#: config/settings/base.py:66
+#: config/settings/base.py:67
 msgid "繁體中文"
 msgstr ""
 
-#: config/settings/base.py:67
+#: config/settings/base.py:68
 msgid "简体中文"
 msgstr ""
 
-#: templates/base.html:23
+#: templates/base.html:25
 msgid "My Vocabulary"
 msgstr "我的詞彙"
 
-#: templates/base.html:24
+#: templates/base.html:28
 msgid "Recommended Articles"
 msgstr "推薦文章"
 
-#: templates/base.html:25
+#: templates/base.html:34
 msgid "Logout"
 msgstr "登出"
 
-#: templates/base.html:27 templates/registration/login.html:3
+#: templates/base.html:39 templates/registration/login.html:3
 #: templates/registration/login.html:7 templates/registration/login.html:22
 msgid "Login"
 msgstr "登入"
 
-#: templates/base.html:28 templates/registration/login.html:24
+#: templates/base.html:42 templates/registration/login.html:24
 #: templates/registration/register.html:3
 #: templates/registration/register.html:22
 msgid "Register"

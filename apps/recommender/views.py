@@ -4,6 +4,7 @@ from django.contrib import messages
 
 from .models import VocabList, VocabEntry
 from .services import enrich_with_metadata, get_sources, import_vocab, recommend
+from .utils import get_vocab_display
 
 
 # ---------------------------------------------------------------------------
@@ -15,9 +16,8 @@ def recommend_view(request):
     vocab_lists = VocabList.objects.filter(user=request.user)
     sources = get_sources()
     results = []
-    selected_list_id = None
-    selected_source = None
-    heuristic = "avg"
+
+    session_key = "recommend_last_query"
 
     if request.method == "POST":
         selected_list_id = request.POST.get("vocab_list")
@@ -25,13 +25,36 @@ def recommend_view(request):
         heuristic = request.POST.get("heuristic", "avg")
         n = int(request.POST.get("n", 10))
 
-        if selected_list_id:
-            vocab_list = get_object_or_404(
-                VocabList, id=selected_list_id, user=request.user
-            )
-            results = recommend(vocab_list, source=selected_source,
-                                heuristic=heuristic, n=n)
-            results = enrich_with_metadata(results)
+        # Remember this query so a later GET (e.g. redirected back here
+        # after toggling the script preference, or just a page refresh)
+        # can restore and recompute the same results instead of losing
+        # them.
+        request.session[session_key] = {
+            "selected_list_id": selected_list_id,
+            "selected_source": selected_source,
+            "heuristic": heuristic,
+            "n": n,
+        }
+    else:
+        last_query = request.session.get(session_key)
+        if last_query:
+            selected_list_id = last_query["selected_list_id"]
+            selected_source = last_query["selected_source"]
+            heuristic = last_query["heuristic"]
+            n = last_query["n"]
+        else:
+            selected_list_id = None
+            selected_source = None
+            heuristic = "avg"
+            n = 10
+
+    if selected_list_id:
+        vocab_list = get_object_or_404(
+            VocabList, id=selected_list_id, user=request.user
+        )
+        results = recommend(vocab_list, source=selected_source,
+                            heuristic=heuristic, n=n)
+        results = enrich_with_metadata(results)
 
     return render(request, "recommender/recommend.html", {
         "vocab_lists": vocab_lists,
@@ -96,9 +119,21 @@ def vocab_list_detail(request, pk):
             )
             return redirect("vocab_list_detail", pk=pk)
 
+    # New display logic
+    display_entries = []
+
+    preference = getattr(request.user.profile, 'preferred_script', 'traditional')  # adjust as needed
+
+    for entry in entries:
+        display_entries.append({
+            "entry": entry,
+            "display": get_vocab_display(entry, preference)
+        })
+
     return render(request, "recommender/vocab_list_detail.html", {
         "vocab_list": vocab_list,
-        "entries": entries,
+        "entries": display_entries,
+        "preference": preference,
         "entry_count": entries.count(),
     })
 
@@ -115,3 +150,20 @@ def vocab_list_delete(request, pk):
     return render(request, "recommender/vocab_list_confirm_delete.html", {
         "vocab_list": vocab_list,
     })
+
+@login_required
+def toggle_script_pref(request):
+    """Toggle between simplified-first / traditional-first display preference."""
+
+    profile = request.user.profile
+
+    if profile.preferred_script == 'traditional':
+        profile.preferred_script = 'simplified'
+    else:
+        profile.preferred_script = 'traditional'
+
+    profile.save()
+
+    # Redirect back to where the user came from
+    next_url = request.GET.get('next') or request.META.get('HTTP_REFERER') or 'recommend'
+    return redirect(next_url)
