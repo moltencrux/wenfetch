@@ -5,6 +5,7 @@ Views should be thin — all non-trivial logic lives here.
 
 import json
 import heapq
+from itertools import count
 from pathlib import Path
 from string import printable
 
@@ -128,6 +129,7 @@ def recommend(
 
     # Score and sort
     heap = []  # min-heap of (score, entry)
+    hcount = count()
     for key, data in articles.items():
         tokens = data["tokens"]
         if not tokens:
@@ -150,11 +152,11 @@ def recommend(
 
         # Maintain top N using heap
         if len(heap) < n:
-            heapq.heappush(heap, (score, entry))
+            heapq.heappush(heap, (score, next(hcount), entry))
         else:
-            heapq.heappushpop(heap, (score, entry))  # push new, pop smallest if better
+            heapq.heappushpop(heap, (score, next(hcount), entry))  # push new, pop smallest if better
 
-    results = [entry for score, entry in sorted(heap, reverse=True)]
+    results = [entry for score, hcount, entry in sorted(heap, reverse=True)]
     return results[:n]
 
 
