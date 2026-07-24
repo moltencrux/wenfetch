@@ -30,6 +30,15 @@ A Django app that recommends Chinese articles based on your vocabulary level.
 ### 5. Read Articles
 - Click on recommended articles to read full content.
 
+## Ranking Heuristic Explanations
+This is an explanation of the way articles are scored for each heuristic method
+
+- **Average frequency** - Ranks articles based on the average frequency of new vocabulary (e.g. vocabuulary not in your selected vocabulary list)
+  * This is probably the preferred mode as it will tend to recommend articles with a reasonable amount of new vocabulary that is most useful to the user.
+
+- **Total frequency** - Ranks articles based on the total frequency of new vocabulary they contain
+  - This mode will tend to select articles with the most new words and will likely be overwheliming to all but very advanced learners.
+
 ## Development setup
 
 ```bash
