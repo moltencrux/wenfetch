@@ -3,7 +3,7 @@ services:
     image: caddy:alpine
     restart: unless-stopped
     ports:
-      - "${HTTP_PORT:-8080}:8080"
+      - "127.0.0.1:${HTTP_PORT:-8080}:8080"
       - "${HTTPS_PORT:-8443}:8443"
     volumes:
       - caddy_data:/data
@@ -19,11 +19,13 @@ configs:
   caddy_config:
     content: |
       {
-        http_port ${HTTP_PORT:-8080}
-        https_port ${HTTPS_PORT:-8443}
+        http_port 8080
+        https_port 8443
+        auto_https disable_redirects
       }
 
-      https://${SERVER_HOSTNAME:-localhost} {
+      https://${CADDY_HOSTNAMES} http://${CADDY_HOSTNAMES} {
+
         tls ${TLS_MODE:-internal}
 
         handle_path /static/* {
