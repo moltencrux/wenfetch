@@ -99,10 +99,9 @@ msgid "Select vocabulary list and press \"Get recommendations\"."
 msgstr ""
 
 #: apps/recommender/templates/recommender/vocab_list_confirm_delete.html:3
-#, fuzzy
 #| msgid "Add vocabulary list"
 msgid "Delete vocabulary list"
-msgstr "新增詞彙表"
+msgstr ""
 
 #: apps/recommender/templates/recommender/vocab_list_confirm_delete.html:8
 #: apps/recommender/templates/recommender/vocab_list_confirm_delete.html:18
@@ -121,10 +120,9 @@ msgstr ""
 
 #: apps/recommender/templates/recommender/vocab_list_create.html:3
 #: apps/recommender/templates/recommender/vocab_list_create.html:7
-#, fuzzy
 #| msgid "Add vocabulary list"
 msgid "Add new vocabulary list"
-msgstr "新增詞彙表"
+msgstr ""
 
 #: apps/recommender/templates/recommender/vocab_list_create.html:11
 msgid "name"
@@ -148,10 +146,8 @@ msgid "Delete"
 msgstr ""
 
 #: apps/recommender/templates/recommender/vocab_list_detail.html:15
-#, fuzzy
-#| msgid "Add vocabulary list"
 msgid "Add vocabulary"
-msgstr "新增詞彙表"
+msgstr ""
 
 #: apps/recommender/templates/recommender/vocab_list_detail.html:21
 msgid "Paste"
@@ -174,10 +170,9 @@ msgid "Add"
 msgstr ""
 
 #: apps/recommender/templates/recommender/vocab_list_detail.html:42
-#, fuzzy
 #| msgid "Add vocabulary list"
 msgid "Known vocabulary"
-msgstr "新增詞彙表"
+msgstr ""
 
 #: apps/recommender/templates/recommender/vocab_list_detail.html:50
 #: apps/recommender/templates/recommender/vocab_list_detail.html:58
@@ -220,7 +215,7 @@ msgstr ""
 
 #: apps/recommender/templates/recommender/vocab_list_index.html:9
 msgid "Add vocabulary list"
-msgstr "新增詞彙表"
+msgstr ""
 
 #: apps/recommender/templates/recommender/vocab_list_index.html:22
 msgid "no vocublary lists exist."
