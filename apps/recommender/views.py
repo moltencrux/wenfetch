@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 
 from .models import VocabList, VocabEntry
-from .services import enrich_with_metadata, get_sources, import_vocab, recommend
+from .services import enrich_with_metadata, get_sources, import_vocab, recommend, HEURISTICS
 from .utils import get_vocab_display
 
 
@@ -63,6 +63,7 @@ def recommend_view(request):
         "selected_list_id": selected_list_id,
         "selected_source": selected_source,
         "heuristic": heuristic,
+        "HEURISTICS": HEURISTICS,
     })
 
 

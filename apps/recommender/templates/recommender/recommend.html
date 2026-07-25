@@ -34,8 +34,9 @@
       <div class="mb-3">
         <label class="form-label">{% translate 'Scoring method' %}</label>
         <select name="heuristic" class="form-select">
-          <option value="avg" {% if heuristic == "avg" %}selected{% endif %}>{% translate 'average frequency (default)' %}</option>
-          <option value="total" {% if heuristic == "total" %}selected{% endif %}>{% translate 'total frequency' %}</option>
+          {% for h in HEURISTICS %}
+          <option value="{{ h.key }}" {% if heuristic == h.key %}selected{% endif %}>{% translate h.label %}</option>
+          {% endfor %}
         </select>
       </div>
       <div class="mb-3">

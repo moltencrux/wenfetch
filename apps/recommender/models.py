@@ -12,6 +12,16 @@ class FreqEntry(models.Model):
     def __str__(self):
         return f"{self.word} ({self.frequency})"
 
+class CharFreqEntry(models.Model):
+    """Corpus character frequency table."""
+    char = models.CharField(max_length=1, unique=True, db_index=True)
+    frequency = models.IntegerField()
+
+    class Meta:
+        verbose_name_plural = "char freq entries"
+
+    def __str__(self):
+        return f"{self.char} ({self.frequency})"
 
 class ArticleToken(models.Model):
     """Pre-segmented tokens for each scraped article."""
