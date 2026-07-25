@@ -33,11 +33,19 @@ A Django app that recommends Chinese articles based on your vocabulary level.
 ## Ranking Heuristic Explanations
 This is an explanation of the way articles are scored for each heuristic method
 
-- **Average frequency** - Ranks articles based on the average frequency of new vocabulary (e.g. vocabuulary not in your selected vocabulary list)
+- **Average new word frequency** - Ranks articles based on the average frequency of new vocabulary (e.g. vocabuulary not in your selected vocabulary list)
   * This is probably the preferred mode as it will tend to recommend articles with a reasonable amount of new vocabulary that is most useful to the user.
 
-- **Total frequency** - Ranks articles based on the total frequency of new vocabulary they contain
+- **Total new word frequency** - Ranks articles based on the total frequency of new vocabulary they contain
   - This mode will tend to select articles with the most new words and will likely be overwheliming to all but very advanced learners.
+
+- **Average new character frequency** - Ranks articles based on the frequency of new characters.
+  - This mode aims to be a way to improve the users' total character count by recommending articles with a modest number of new and useful characters
+
+- **Total new character frequency** - Ranks articles based on the frequency of new characters.
+
+- **Minimum new word frquency** - Ranks articles with the fewest new words
+  - The aim of this heuristic is to find easy reading material that is mostly review.
 
 ## Development setup
 
@@ -63,13 +71,38 @@ python manage.py createsuperuser
 # https://bcc.blcu.edu.cn/api/datasets/modern_chinese_word_freq.txt/download
 # https://bcc.blcu.edu.cn/api/datasets/classical_chinese_word_freq.txt/downloa 
 
-# Download frequency tables
+# Download frequency tables (word frequency)
 funzip <(curl \
   https://bcc.blcu.edu.cn/api/datasets/news_total_word_freq.txt/download) \
   > data/news_total_word_freq.txt
 
+python -c 'import sys, uao; sys.stdout.write(uao.Big5UAOCodec().decode(sys.stdin.buffer.read())[0])'
+
+# Download and convert traditional character frquency tables
+bsdtar --include "BIAU1/BIAU1.TXT" -xOf \
+  <(curl https://language.moe.gov.tw/001/Upload/files/SITE_CONTENT/M0001/BIAU1.zip) \
+  | piconv -f big5-eten -t utf-8 | sed 's/[[:blank:]]//g' \
+  | sed -n 's/^║[0-9]\+│\([^│]\)[^║]*║\([0-9]\+\).*$/\1\t\2/p' \
+  > data/trad_char_freq.txt
+
+# Alternative way to convert frequency tables.The source data was 
+# compiled long before UTF-8 and uses a format something like BIG5-UAO
+# or big5-eten. But even with those, there are a few characters that
+# don't convert properly.
+bsdtar --include "BIAU1/BIAU1.TXT" -xOf \
+  <(curl https://language.moe.gov.tw/001/Upload/files/SITE_CONTENT/M0001/BIAU1.zip) \
+  | python -c 'import sys, uao; sys.stdout.write(uao.Big5UAOCodec().decode(sys.stdin.buffer.read())[0])' \
+  | sed 's/[[:blank:]]//g' \
+  | sed -n 's/^║[0-9]\+│\([^│]\)[^║]*║\([0-9]\+\).*$/\1\t\2/p' \
+  > data/trad_char_freq.txt
+
+# Another alternative for simplified character frequency
+cut -f1,2 -d, <(curl https://zhuyuhao.com/chinese-characters-frequency/tables/六億知乎語料通規漢字字頻表.csv) > data/simp_char_freq.txt
+
 # Import frequency data
-python manage.py import_freq --file data/news_total_word_freq.txt
+python manage.py import_freq --clear \
+  --word-file data/news_total_word_freq.txt \
+  --char-file data/trad_freq.txt
 
 # Get a list of valid dictionary words
 curl -L \

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-10 15:04+0800\n"
+"POT-Creation-Date: 2026-07-27 11:32+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apps/recommender/services.py:318
+msgid "Average new word frequency"
+msgstr ""
+
+#: apps/recommender/services.py:319
+msgid "Total new word frequency"
+msgstr ""
+
+#: apps/recommender/services.py:320
+msgid "Minimum new word count"
+msgstr ""
+
+#: apps/recommender/services.py:321
+msgid "Average new character frequency"
+msgstr ""
+
+#: apps/recommender/services.py:322
+msgid "Total new character frequency"
+msgstr ""
 
 #: apps/recommender/templates/recommender/recommend.html:4
 #: templates/base.html:10 templates/base.html:20
@@ -47,59 +67,50 @@ msgstr ""
 msgid "Scoring method"
 msgstr ""
 
-#: apps/recommender/templates/recommender/recommend.html:37
-msgid "average frequency (default)"
-msgstr ""
-
-#: apps/recommender/templates/recommender/recommend.html:38
-msgid "total frequency"
-msgstr ""
-
-#: apps/recommender/templates/recommender/recommend.html:42
+#: apps/recommender/templates/recommender/recommend.html:54
 msgid "Number of recommendations"
 msgstr ""
 
-#: apps/recommender/templates/recommender/recommend.html:45
+#: apps/recommender/templates/recommender/recommend.html:57
 #: apps/recommender/templates/recommender/vocab_list_detail.html:10
 msgid "Get recommendations"
 msgstr ""
 
-#: apps/recommender/templates/recommender/recommend.html:50
+#: apps/recommender/templates/recommender/recommend.html:62
 msgid "Recommendations"
 msgstr ""
 
-#: apps/recommender/templates/recommender/recommend.html:50
+#: apps/recommender/templates/recommender/recommend.html:62
 msgid "article(s)"
 msgstr ""
 
-#: apps/recommender/templates/recommender/recommend.html:54
-#: apps/recommender/templates/recommender/vocab_list_detail.html:64
-msgid "S ⇆ T"
-msgstr ""
-
-#: apps/recommender/templates/recommender/recommend.html:54
+#: apps/recommender/templates/recommender/recommend.html:66
 #: apps/recommender/templates/recommender/vocab_list_detail.html:64
 msgid "T ⇆ S"
 msgstr ""
 
-#: apps/recommender/templates/recommender/recommend.html:76
+#: apps/recommender/templates/recommender/recommend.html:66
+#: apps/recommender/templates/recommender/vocab_list_detail.html:64
+msgid "S ⇆ T"
+msgstr ""
+
+#: apps/recommender/templates/recommender/recommend.html:88
 msgid "unkonwn words"
 msgstr ""
 
-#: apps/recommender/templates/recommender/recommend.html:76
+#: apps/recommender/templates/recommender/recommend.html:88
 msgid "top unknown words"
 msgstr ""
 
-#: apps/recommender/templates/recommender/recommend.html:85
+#: apps/recommender/templates/recommender/recommend.html:97
 msgid "no articles match the search requirements."
 msgstr ""
 
-#: apps/recommender/templates/recommender/recommend.html:87
+#: apps/recommender/templates/recommender/recommend.html:99
 msgid "Select vocabulary list and press \"Get recommendations\"."
 msgstr ""
 
 #: apps/recommender/templates/recommender/vocab_list_confirm_delete.html:3
-#| msgid "Add vocabulary list"
 msgid "Delete vocabulary list"
 msgstr ""
 
@@ -120,7 +131,6 @@ msgstr ""
 
 #: apps/recommender/templates/recommender/vocab_list_create.html:3
 #: apps/recommender/templates/recommender/vocab_list_create.html:7
-#| msgid "Add vocabulary list"
 msgid "Add new vocabulary list"
 msgstr ""
 
@@ -170,7 +180,6 @@ msgid "Add"
 msgstr ""
 
 #: apps/recommender/templates/recommender/vocab_list_detail.html:42
-#| msgid "Add vocabulary list"
 msgid "Known vocabulary"
 msgstr ""
 

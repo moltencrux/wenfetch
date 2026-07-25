@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-10 15:04+0800\n"
+"POT-Creation-Date: 2026-07-27 11:32+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: apps/recommender/services.py:318
+#| msgid "average frequency (default)"
+msgid "Average new word frequency"
+msgstr "平均生词频率 (预设)"
+
+#: apps/recommender/services.py:319
+#| msgid "total frequency"
+msgid "Total new word frequency"
+msgstr "总生词频率"
+
+#: apps/recommender/services.py:320
+#| msgid "top unknown words"
+msgid "Minimum new word count"
+msgstr "最少生词量"
+
+#: apps/recommender/services.py:321
+msgid "Average new character frequency"
+msgstr "平均生字频率"
+
+#: apps/recommender/services.py:322
+#| msgid "total frequency"
+msgid "Total new character frequency"
+msgstr "总生字频率"
 
 #: apps/recommender/templates/recommender/recommend.html:4
 #: templates/base.html:10 templates/base.html:20
@@ -47,54 +71,46 @@ msgstr "所有来源"
 msgid "Scoring method"
 msgstr "评分方式"
 
-#: apps/recommender/templates/recommender/recommend.html:37
-msgid "average frequency (default)"
-msgstr "平均频率 (预设)"
-
-#: apps/recommender/templates/recommender/recommend.html:38
-msgid "total frequency"
-msgstr "总频率"
-
-#: apps/recommender/templates/recommender/recommend.html:42
+#: apps/recommender/templates/recommender/recommend.html:54
 msgid "Number of recommendations"
 msgstr "推荐数量"
 
-#: apps/recommender/templates/recommender/recommend.html:45
+#: apps/recommender/templates/recommender/recommend.html:57
 #: apps/recommender/templates/recommender/vocab_list_detail.html:10
 msgid "Get recommendations"
 msgstr "取得推荐"
 
-#: apps/recommender/templates/recommender/recommend.html:50
+#: apps/recommender/templates/recommender/recommend.html:62
 msgid "Recommendations"
 msgstr "文章推荐"
 
-#: apps/recommender/templates/recommender/recommend.html:50
+#: apps/recommender/templates/recommender/recommend.html:62
 msgid "article(s)"
 msgstr "篇"
 
-#: apps/recommender/templates/recommender/recommend.html:54
-#: apps/recommender/templates/recommender/vocab_list_detail.html:64
-msgid "S ⇆ T"
-msgstr "简⇆繁"
-
-#: apps/recommender/templates/recommender/recommend.html:54
+#: apps/recommender/templates/recommender/recommend.html:66
 #: apps/recommender/templates/recommender/vocab_list_detail.html:64
 msgid "T ⇆ S"
 msgstr "繁⇆简"
 
-#: apps/recommender/templates/recommender/recommend.html:76
+#: apps/recommender/templates/recommender/recommend.html:66
+#: apps/recommender/templates/recommender/vocab_list_detail.html:64
+msgid "S ⇆ T"
+msgstr "简⇆繁"
+
+#: apps/recommender/templates/recommender/recommend.html:88
 msgid "unkonwn words"
 msgstr "未知词"
 
-#: apps/recommender/templates/recommender/recommend.html:76
+#: apps/recommender/templates/recommender/recommend.html:88
 msgid "top unknown words"
 msgstr "个未知词 · 高频未知词："
 
-#: apps/recommender/templates/recommender/recommend.html:85
+#: apps/recommender/templates/recommender/recommend.html:97
 msgid "no articles match the search requirements."
 msgstr "没有找到符合条件的文章"
 
-#: apps/recommender/templates/recommender/recommend.html:87
+#: apps/recommender/templates/recommender/recommend.html:99
 msgid "Select vocabulary list and press \"Get recommendations\"."
 msgstr "选择词汇表并按下「取得推荐」。"
 
@@ -215,10 +231,8 @@ msgid "Add vocabulary list"
 msgstr "新增词汇表"
 
 #: apps/recommender/templates/recommender/vocab_list_index.html:22
-#, fuzzy
-#| msgid "Vocabulary lists"
 msgid "no vocublary lists exist."
-msgstr "我的词汇"
+msgstr "尚未建立词汇列表"
 
 #: config/settings/base.py:66
 msgid "English"
@@ -267,5 +281,3 @@ msgstr "建立帐号"
 msgid "Already have an account?"
 msgstr "已有帐号"
 
-#~ msgid "length"
-#~ msgstr "篇"
