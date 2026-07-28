@@ -4,6 +4,8 @@ Views should be thin — all non-trivial logic lives here.
 """
 
 import json
+import heapq
+from itertools import count
 from collections import namedtuple
 from pathlib import Path
 from typing import Callable
@@ -16,7 +18,6 @@ from django.utils.translation import gettext_lazy as _
 from .models import ArticleToken, FreqEntry, CharFreqEntry, VocabEntry, VocabList
 from .utils import process_vocab_entry_on_add, t2s, s2t
 
-from apps.recommender.utils import t2s, s2t   # already defined in utils.py
 
 FILTER_CHARS = set(printable)
 
@@ -173,7 +174,7 @@ def _score_word_avg(vocab_list: VocabList, source: str | None) -> list[dict]:
             continue
         freqs = [f for _, f in tokens]
         score = sum(freqs) / len(freqs)
-        top = sorted(tokens, key=lambda x: x[1], reverse=True)[:10]
+        top = heapq.nlargest(10, tokens, key=lambda x: x[1])
         results.append({
             "article_key": data["article_key"],
             "source": data["source"],
@@ -184,6 +185,7 @@ def _score_word_avg(vocab_list: VocabList, source: str | None) -> list[dict]:
     return results
 
 
+
 def _score_word_total(vocab_list: VocabList, source: str | None) -> list[dict]:
     articles = _word_candidates(vocab_list, source)
     results = []
@@ -192,7 +194,7 @@ def _score_word_total(vocab_list: VocabList, source: str | None) -> list[dict]:
         if not tokens:
             continue
         score = float(sum(f for _, f in tokens))
-        top = sorted(tokens, key=lambda x: x[1], reverse=True)[:10]
+        top = heapq.nlargest(10, tokens, key=lambda x: x[1])
         results.append({
             "article_key": data["article_key"],
             "source": data["source"],
@@ -211,7 +213,7 @@ def _min_unknown_words(vocab_list: VocabList, source: str | None) -> list[dict]:
         freqs = [f for _, f in tokens]
         u = len(freqs)
         score = float("inf") if u == 0 else (sum(freqs) / (u * (u + 1)))
-        top = sorted(tokens, key=lambda x: x[1], reverse=True)[:10]
+        top = heapq.nlargest(10, tokens, key=lambda x: x[1])
 
         results.append({
             "article_key": data["article_key"],
@@ -267,7 +269,7 @@ def _score_char_avg(vocab_list: VocabList, source: str | None) -> list[dict]:
         scored = item["scored"]
         freqs = [f for _, f in scored]
         score = sum(freqs) / len(freqs)
-        top = sorted(scored, key=lambda x: x[1], reverse=True)[:10]
+        top = heapq.nlargest(10, scored, key=lambda x: x[1])
         results.append({
             "article_key": item["article_key"],
             "source": item["source"],
@@ -284,7 +286,8 @@ def _score_char_total(vocab_list: VocabList, source: str | None) -> list[dict]:
     for item in raw:
         scored = item["scored"]
         score = float(sum(f for _, f in scored))
-        top = sorted(scored, key=lambda x: x[1], reverse=True)[:10]
+        top = heapq.nlargest(10, scored, key=lambda x: x[1])
+
         results.append({
             "article_key": item["article_key"],
             "source": item["source"],
@@ -334,8 +337,8 @@ def recommend(
         self.stderr.write(f"Heuristic {heuristic} unknown, reverting to default.")
 
     results = h.scorer(vocab_list, source)
-    results.sort(key=lambda r: r["score"], reverse=True)
-    return results[:n]
+
+    return heapq.nlargest(n, results, key=lambda r: r["score"])
 
 def enrich_with_metadata(results: list[dict]) -> list[dict]:
     """
