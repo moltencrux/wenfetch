@@ -328,20 +328,10 @@ def recommend(
 
     heuristic must be one of the keys registered in HEURISTICS.
     """
-    # ------------------------------------------------------------------
-    # Character path
-    # ------------------------------------------------------------------
-    if heuristic in ("char-avg", "char-total"):
-        known = known_chars(vocab_list)
-        char_freq = dict(CharFreqEntry.objects.values_list("char", "frequency"))
 
-        # Candidate articles = those that already have word tokens
-        qs = ArticleToken.objects.values("article_key", "source").distinct()
-        h = HEURISTIC_MAP.get(heuristic, HEURISTIC_MAP['avg'])
-        if heuristic not in HEURISTIC_MAP:
-            self.stderr.write(f"Heuristic {heuristic} unknown, reverting to default.")
-
-
+    h = HEURISTIC_MAP.get(heuristic, HEURISTIC_MAP['avg'])
+    if heuristic not in HEURISTIC_MAP:
+        self.stderr.write(f"Heuristic {heuristic} unknown, reverting to default.")
 
     results = h.scorer(vocab_list, source)
     results.sort(key=lambda r: r["score"], reverse=True)
