@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-28 16:21+0800\n"
+"POT-Creation-Date: 2026-07-28 22:43+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,23 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: apps/recommender/services.py:303
+#: apps/recommender/services.py:306
 msgid "Average new word frequency"
 msgstr "平均生词频率 (预设)"
 
-#: apps/recommender/services.py:304
+#: apps/recommender/services.py:307
 msgid "Total new word frequency"
 msgstr "总生词频率"
 
-#: apps/recommender/services.py:305
+#: apps/recommender/services.py:308
 msgid "Minimum new word count"
 msgstr "最少生词量"
 
-#: apps/recommender/services.py:306
+#: apps/recommender/services.py:309
 msgid "Average new character frequency"
 msgstr "平均生字频率"
 
-#: apps/recommender/services.py:307
+#: apps/recommender/services.py:310
 msgid "Total new character frequency"
 msgstr "总生字频率"
 
@@ -238,6 +238,11 @@ msgstr "新增词汇表"
 #: apps/recommender/templates/recommender/vocab_list_index.html:22
 msgid "No vocabulary lists exist."
 msgstr "尚未建立词汇列表。"
+
+#: apps/recommender/views.py:121
+#, python-brace-format
+msgid "Added {added} words ({skipped} duplicate entries skipped)."
+msgstr "已新增{added}个词汇（跳过{skipped}个重复项目）。"
 
 #: config/settings/base.py:66
 msgid "English"

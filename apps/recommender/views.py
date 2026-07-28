@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
+from django.utils.translation import gettext_lazy as _
 
 from .models import VocabList, VocabEntry
 from .services import enrich_with_metadata, get_sources, import_vocab, recommend, HEURISTICS
@@ -116,7 +117,9 @@ def vocab_list_detail(request, pk):
             added, skipped = import_vocab(vocab_list, text)
             messages.success(
                 request,
-                f"Added {added} words ({skipped} already in list)."
+                _(
+                    "Added {added} words ({skipped} duplicate entries skipped)."
+                ).format(added=added, skipped=skipped)
             )
             return redirect("vocab_list_detail", pk=pk)
 
