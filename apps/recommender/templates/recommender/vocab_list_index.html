@@ -19,7 +19,7 @@
         {% endfor %}
       </div>
     {% else %}
-      <p class="text-muted">{% translate 'no vocublary lists exist.' %}<a href="{% url 'vocab_list_create' %}">建立第一個</a>。</p>
+      <p class="text-muted">{% translate 'No vocabulary lists exist.' %} <a href="{% url 'vocab_list_create' %}">{% translate 'Add a vocabulary list' %}</a>。</p>
     {% endif %}
   </div>
 </div>

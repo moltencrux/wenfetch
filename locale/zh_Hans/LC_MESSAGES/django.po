@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-27 11:32+0800\n"
+"POT-Creation-Date: 2026-07-28 16:21+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,27 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: apps/recommender/services.py:318
-#| msgid "average frequency (default)"
+#: apps/recommender/services.py:303
 msgid "Average new word frequency"
 msgstr "平均生词频率 (预设)"
 
-#: apps/recommender/services.py:319
-#| msgid "total frequency"
+#: apps/recommender/services.py:304
 msgid "Total new word frequency"
 msgstr "总生词频率"
 
-#: apps/recommender/services.py:320
-#| msgid "top unknown words"
+#: apps/recommender/services.py:305
 msgid "Minimum new word count"
 msgstr "最少生词量"
 
-#: apps/recommender/services.py:321
+#: apps/recommender/services.py:306
 msgid "Average new character frequency"
 msgstr "平均生字频率"
 
-#: apps/recommender/services.py:322
-#| msgid "total frequency"
+#: apps/recommender/services.py:307
 msgid "Total new character frequency"
 msgstr "总生字频率"
 
@@ -59,6 +55,15 @@ msgstr "我的词汇"
 msgid "Select vocabulary list"
 msgstr "选择词汇表"
 
+#: apps/recommender/templates/recommender/recommend.html:22
+#: apps/recommender/templates/recommender/vocab_list_index.html:22
+msgid "Add a vocabulary list"
+msgstr "建立一个词汇表"
+
+#: apps/recommender/templates/recommender/recommend.html:22
+msgid " to get started."
+msgstr "来开始。"
+
 #: apps/recommender/templates/recommender/recommend.html:26
 msgid "Source (optional)"
 msgstr "来源 (选填)"
@@ -71,46 +76,46 @@ msgstr "所有来源"
 msgid "Scoring method"
 msgstr "评分方式"
 
-#: apps/recommender/templates/recommender/recommend.html:54
+#: apps/recommender/templates/recommender/recommend.html:43
 msgid "Number of recommendations"
 msgstr "推荐数量"
 
-#: apps/recommender/templates/recommender/recommend.html:57
+#: apps/recommender/templates/recommender/recommend.html:46
 #: apps/recommender/templates/recommender/vocab_list_detail.html:10
 msgid "Get recommendations"
 msgstr "取得推荐"
 
-#: apps/recommender/templates/recommender/recommend.html:62
+#: apps/recommender/templates/recommender/recommend.html:51
 msgid "Recommendations"
 msgstr "文章推荐"
 
-#: apps/recommender/templates/recommender/recommend.html:62
+#: apps/recommender/templates/recommender/recommend.html:51
 msgid "article(s)"
 msgstr "篇"
 
-#: apps/recommender/templates/recommender/recommend.html:66
+#: apps/recommender/templates/recommender/recommend.html:55
 #: apps/recommender/templates/recommender/vocab_list_detail.html:64
 msgid "T ⇆ S"
 msgstr "繁⇆简"
 
-#: apps/recommender/templates/recommender/recommend.html:66
+#: apps/recommender/templates/recommender/recommend.html:55
 #: apps/recommender/templates/recommender/vocab_list_detail.html:64
 msgid "S ⇆ T"
 msgstr "简⇆繁"
 
-#: apps/recommender/templates/recommender/recommend.html:88
+#: apps/recommender/templates/recommender/recommend.html:77
 msgid "unkonwn words"
 msgstr "未知词"
 
-#: apps/recommender/templates/recommender/recommend.html:88
+#: apps/recommender/templates/recommender/recommend.html:77
 msgid "top unknown words"
 msgstr "个未知词 · 高频未知词："
 
-#: apps/recommender/templates/recommender/recommend.html:97
+#: apps/recommender/templates/recommender/recommend.html:86
 msgid "no articles match the search requirements."
 msgstr "没有找到符合条件的文章"
 
-#: apps/recommender/templates/recommender/recommend.html:99
+#: apps/recommender/templates/recommender/recommend.html:88
 msgid "Select vocabulary list and press \"Get recommendations\"."
 msgstr "选择词汇表并按下「取得推荐」。"
 
@@ -231,8 +236,8 @@ msgid "Add vocabulary list"
 msgstr "新增词汇表"
 
 #: apps/recommender/templates/recommender/vocab_list_index.html:22
-msgid "no vocublary lists exist."
-msgstr "尚未建立词汇列表"
+msgid "No vocabulary lists exist."
+msgstr "尚未建立词汇列表。"
 
 #: config/settings/base.py:66
 msgid "English"
@@ -280,4 +285,3 @@ msgstr "建立帐号"
 #: templates/registration/register.html:24
 msgid "Already have an account?"
 msgstr "已有帐号"
-

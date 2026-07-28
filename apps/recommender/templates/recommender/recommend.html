@@ -19,7 +19,7 @@
           {% endfor %}
         </select>
         {% if not vocab_lists %}
-          <div class="form-text"><a href="{% url 'vocab_list_create' %}">建立一個詞彙表</a>來開始。</div>
+          <div class="form-text"><a href="{% url 'vocab_list_create' %}">{% translate 'Add a vocabulary list' %}</a>{% translate ' to get started.' %}</div>
         {% endif %}
       </div>
       <div class="mb-3">
