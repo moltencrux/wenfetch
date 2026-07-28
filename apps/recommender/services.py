@@ -65,7 +65,7 @@ def parse_vocab_text(text: str) -> list[str]:
     words = []
     for line in text.splitlines():
         word = line.split("\t")[0].strip()
-        if not word or word.startswith("#"):
+        if not word or word.startswith("#") or word.startswith("//"):
             continue
         word = word.split("[")[0].strip()
         if not set(word) - FILTER_CHARS:
@@ -243,7 +243,7 @@ def _char_candidates(vocab_list: VocabList, source: str | None):
         if not txt_path:
             continue
         try:
-            text = txt_path.read_text(encoding="utf-8")
+            text = txt_path.read_text(encoding="utf-8-sig")
         except OSError:
             continue
 

@@ -39,7 +39,7 @@ class Command(BaseCommand):
             )
 
         def iter_freq_rows(path: Path):
-            with open(path, encoding="utf-8") as f:
+            with open(path, encoding="utf-8-sig") as f:
                 sample = f.read(8192)
 
             sniffer = csv.Sniffer()
@@ -55,7 +55,7 @@ class Command(BaseCommand):
                 f"({'CSV' if dialect.delimiter == ',' else 'TSV'})"
             )
 
-            with open(path, encoding="utf-8") as f:
+            with open(path, encoding="utf-8-sig") as f:
                 reader = csv.reader(f, dialect=dialect)
                 if has_header:
                     header = next(reader, None)
@@ -65,7 +65,7 @@ class Command(BaseCommand):
                     if len(row) < 2:
                         continue
                     entry = row[0].strip()
-                    if not entry or entry.startswith("#"):
+                    if not entry or entry.startswith("#") or entry.startswith("//"):
                         continue
                     try:
                         freq = int(row[1].strip().replace(",", ""))

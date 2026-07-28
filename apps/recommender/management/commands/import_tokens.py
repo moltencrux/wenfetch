@@ -40,7 +40,7 @@ def load_wordlist(path: str) -> set[str]:
     Excludes entries with no Chinese characters.
     """
     words = set()
-    with open(path, encoding="utf-8") as f:
+    with open(path, encoding="utf-8-sig") as f:
         for line in f:
             word = line.split("\t")[0].strip()
             if not word or word.startswith("#"):
@@ -153,7 +153,7 @@ class Command(BaseCommand):
                 txt_path = meta_path.with_suffix(".txt")
                 if not txt_path.exists():
                     continue
-                text = txt_path.read_text(encoding="utf-8")
+                text = txt_path.read_text(encoding="utf-8-sig")
                 tokens = tokenize(text, seg, reference=reference)
                 if not tokens:
                     continue

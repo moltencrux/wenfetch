@@ -109,7 +109,7 @@ def vocab_list_detail(request, pk):
         text = ""
         if "vocab_file" in request.FILES:
             uploaded = request.FILES["vocab_file"]
-            text = uploaded.read().decode("utf-8", errors="replace")
+            text = uploaded.read().decode("utf-8-sig", errors="replace")
         elif "vocab_text" in request.POST:
             text = request.POST["vocab_text"]
 
