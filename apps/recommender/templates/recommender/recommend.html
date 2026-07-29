@@ -4,7 +4,8 @@
 {% block title %}{% translate 'Article Recommendations' %}{% endblock %}
 {% block content %}
 <div class="row mt-4">
-  <div class="col-md-3">
+  <!-- Form first on mobile, sidebar on desktop -->
+  <div class="col-md-3 order-2 order-md-1">
     <h5>{% translate 'Search settings' %}</h5>
     <form method="post">
       {% csrf_token %}
@@ -19,7 +20,9 @@
           {% endfor %}
         </select>
         {% if not vocab_lists %}
-          <div class="form-text"><a href="{% url 'vocab_list_create' %}">{% translate 'Add a vocabulary list' %}</a>{% translate ' to get started.' %}</div>
+          <div class="form-text">
+            <a href="{% url 'vocab_list_create' %}">{% translate 'Add a vocabulary list' %}</a>{% translate ' to get started.' %}
+          </div>
         {% endif %}
       </div>
       <div class="mb-3">
@@ -43,38 +46,53 @@
         <label class="form-label">{% translate 'Number of recommendations' %}</label>
         <input type="number" name="n" class="form-control" value="10" min="1" max="50">
       </div>
-      <button type="submit" class="btn btn-primary w-100">{% translate 'Get recommendations' %}</button>
+      <button type="submit" class="btn btn-primary w-100">
+        {% translate 'Get recommendations' %}
+      </button>
     </form>
   </div>
-  <div class="col-md-9">
-    <h5 style="display: flex; justify-content: space-between;">
-      <span>{% translate 'Recommendations' %} {% if results %}<span class="text-muted fs-6">({{ results|length }} {% translate 'article(s)' %})</span>{% endif %}</span>
+
+  <div class="col-md-9 order-1 order-md-2">
+    <h5 class="d-flex flex-wrap justify-content-between align-items-center gap-2">
       <span>
-        <a href="{% url 'toggle_script_pref' %}?next={{ request.path }}"
-            class="btn btn-outline-secondary btn-sm">
-          {% if zh_pref == 'traditional' %}{% translate 'T ⇆ S' %}{% else %}{% translate 'S ⇆ T' %}{% endif %}
-        </a>
+        {% translate 'Recommendations' %}
+        {% if results %}
+          <span class="text-muted fs-6">({{ results|length }} {% translate 'article(s)' %})</span>
+        {% endif %}
       </span>
+      <a href="{% url 'toggle_script_pref' %}?next={{ request.path }}"
+         class="btn btn-outline-secondary btn-sm">
+        {% if zh_pref == 'traditional' %}{% translate 'T ⇆ S' %}{% else %}{% translate 'S ⇆ T' %}{% endif %}
+      </a>
     </h5>
+
     {% if results %}
       {% for r in results %}
         <div class="card mb-3">
           <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start">
-              <div>
+            <div class="d-flex justify-content-between align-items-start gap-2">
+              <div class="flex-grow-1">
                 <h6 class="card-title mb-1">
                   {% if r.url %}
-                    <a href="{{ r.url }}" target="_blank" rel="noopener">{{ r.title|default:r.article_key }}</a>
+                    <a href="{{ r.url }}" target="_blank" rel="noopener">
+                      {{ r.title|default:r.article_key }}
+                    </a>
                   {% else %}
                     {{ r.title|default:r.article_key }}
                   {% endif %}
                 </h6>
-                <small class="text-muted">{{ r.source }}{% if r.published %} · {{ r.published|slice:":10" }}{% endif %}</small>
+                <small class="text-muted">
+                  {{ r.source }}{% if r.published %} · {{ r.published|slice:":10" }}{% endif %}
+                </small>
               </div>
-              <span class="badge bg-secondary score-badge ms-2">{{ r.score|floatformat:1 }}</span>
+              <span class="badge bg-secondary score-badge flex-shrink-0">
+                {{ r.score|floatformat:1 }}
+              </span>
             </div>
             <div class="mt-2">
-              <small class="text-muted">{{ r.unknown_count }} {% translate 'unkonwn words' %} · {% translate 'top unknown words' %}:</small>
+              <small class="text-muted">
+                {{ r.unknown_count }} {% translate 'unknown words' %} · {% translate 'top unknown words' %}:
+              </small>
               {% for token in r.top_unknown %}
                 <span class="badge bg-light text-dark border me-1">{% zhconv_dual token %}</span>
               {% endfor %}
