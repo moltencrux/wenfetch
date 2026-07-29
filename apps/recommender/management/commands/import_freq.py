@@ -39,23 +39,35 @@ class Command(BaseCommand):
             )
 
         def iter_freq_rows(path: Path):
-            with open(path, encoding="utf-8") as f:
-                sample = f.read(8192)
+            with open(path, encoding="utf-8-sig") as f:
+                # Peek at the underlying buffered bytes without advancing the
+                # text stream.  Falls back to a normal read + seek when peek
+                # is unavailable (should be rare for ordinary files).
+                try:
+                    sample_bytes = f.buffer.peek(8192)
+                    sample = sample_bytes.decode("utf-8-sig", errors="replace")
+                except (AttributeError, OSError):
+                    if f.seekable():
+                        sample = f.read(8192)
+                        f.seek(0)
+                    else:
+                        raise CommandError(
+                            f"cannot sample non-seekable stream: {path}"
+                        )
 
-            sniffer = csv.Sniffer()
-            try:
-                dialect = sniffer.sniff(sample)
-                has_header = sniffer.has_header(sample)
-            except csv.Error:
-                dialect = csv.get_dialect("excel-tab")
-                has_header = True
+                sniffer = csv.Sniffer()
+                try:
+                    dialect = sniffer.sniff(sample)
+                    has_header = sniffer.has_header(sample)
+                except csv.Error:
+                    dialect = csv.get_dialect("excel-tab")
+                    has_header = True
 
-            self.stdout.write(
-                f"Detected delimiter: {dialect.delimiter!r} "
-                f"({'CSV' if dialect.delimiter == ',' else 'TSV'})"
-            )
+                self.stdout.write(
+                    f"Detected delimiter: {dialect.delimiter!r} "
+                    f"({'CSV' if dialect.delimiter == ',' else 'TSV'})"
+                )
 
-            with open(path, encoding="utf-8") as f:
                 reader = csv.reader(f, dialect=dialect)
                 if has_header:
                     header = next(reader, None)
@@ -65,7 +77,7 @@ class Command(BaseCommand):
                     if len(row) < 2:
                         continue
                     entry = row[0].strip()
-                    if not entry or entry.startswith("#"):
+                    if not entry or entry.startswith("#") or entry.startswith("//"):
                         continue
                     try:
                         freq = int(row[1].strip().replace(",", ""))
