@@ -52,6 +52,7 @@ def fetch_index(source: dict) -> Iterator[Article]:
     name = source["name"]
     # depth = source.get("depth", depth)
     pattern = re.compile(source["article_regex"]) if "article_regex" in source else None
+    exclude_pattern = re.compile(source["exclude_regex"]) if "exclude_regex" in source else None
 
     # Queue entries are (url, current_depth)
     queue: deque[tuple[str, int]] = deque([(base_url, 0)])
@@ -74,6 +75,9 @@ def fetch_index(source: dict) -> Iterator[Article]:
 
         for link in links:
             if link in visited:
+                continue
+            if exclude_pattern and exclude_pattern.search(link):
+                print(f"[{name}] forbidden, not following: {link}", file=sys.stderr)
                 continue
             if pattern and pattern.search(link):
                 if link not in article_urls:

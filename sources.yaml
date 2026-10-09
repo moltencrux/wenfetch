@@ -11,6 +11,10 @@ sources:
     url: https://news.pts.org.tw/dailynews
     sitemap: https://news.pts.org.tw/sitemap.xml
     article_regex: /article/\d+
+    # These sections use the same /article/\d+ URL pattern as regular Mandarin
+    # articles, but link to Taigi (台語)/English/Vietnamese/Thai/Indonesian
+    # content, which shouldn't be scored as standard Mandarin.
+    exclude_regex: /news/(taigi|english|vietnam|thai|indonesian)
 
   - name: 科技新報
     rss: http://technews.tw/tn-rss
